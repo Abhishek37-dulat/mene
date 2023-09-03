@@ -1,0 +1,122 @@
+import babykit from "../images/babykit.jpg";
+import babycream from "../images/babycream.jpg";
+import babysoap from "../images/babysoap.jpg";
+import babyoil from "../images/babyoil.jpg";
+import babylotion from "../images/bodylotion.png";
+import babyfood1 from "../images/babyfood1.jpg";
+import babyfood2 from "../images/babyfood2.jpg";
+import babytoy1 from "../images/babytoy1.jpg";
+import babytoy2 from "../images/babytoy2.jpg";
+
+const Cardsdata = [
+  {
+    id: 1,
+    rname: "Baby Kit",
+    imgdata: babykit,
+    address: "For 1 to 5 Years Old baby",
+    delimg: babykit,
+    somedata: " 500 + order placed from here recently",
+    price: 1500,
+    rating: "3.8",
+    arrimg: babykit,
+    qnty: 0,
+  },
+  {
+    id: 2,
+    rname: "Baby Cream",
+    imgdata: babycream,
+    address: "For 1 to 5 Years Old baby",
+    delimg: babycream,
+    somedata: " 300 + order placed from here recently",
+    price: 160,
+    rating: "3.9",
+    arrimg: babycream,
+    qnty: 0,
+  },
+  {
+    id: 3,
+    rname: "Baby Soap",
+    imgdata: babysoap,
+    address: "For 1 to 5 Years Old baby",
+    delimg: babysoap,
+    somedata: " 400 + order placed from here recently",
+    price: 70,
+    rating: "4.2",
+    arrimg: babysoap,
+    qnty: 0,
+  },
+  {
+    id: 4,
+    rname: "Baby Oil",
+    imgdata: babyoil,
+    address: "For 1 to 5 Years Old baby",
+    delimg: babyoil,
+    somedata: " 300 + order placed from here recently",
+    price: 230,
+    rating: "3.8",
+    arrimg: babyoil,
+    qnty: 0,
+  },
+  {
+    id: 5,
+    rname: "Baby Lotion",
+    imgdata: babylotion,
+    address: "For 1 to 5 Years Old baby",
+    delimg: babylotion,
+    somedata: "300 + order placed from here recently",
+    price: 240,
+    rating: "4.0",
+    arrimg: babylotion,
+    qnty: 0,
+  },
+  {
+    id: 6,
+    rname: "Baby Food Bites",
+    imgdata: babyfood1,
+    address: "For 2 to 4 Years Old baby",
+    delimg: babyfood1,
+    somedata: " 600 + order placed from here recently",
+    price: 410,
+    rating: "3.8",
+    arrimg: babyfood1,
+    qnty: 0,
+  },
+  {
+    id: 7,
+    rname: "Baby Food Porridge",
+    imgdata: babyfood2,
+    address: "For 2 to 4 Years Old baby",
+    delimg: babyfood2,
+    somedata: "500 + order placed from here recently",
+    price: 260,
+    rating: "3.8",
+    arrimg: babyfood2,
+    qnty: 0,
+  },
+  {
+    id: 8,
+    rname: "Baby Toy",
+    imgdata: babytoy1,
+    address: "For 2 to 5 Years Old baby",
+    delimg: babytoy1,
+    somedata: "200 + order placed from here recently",
+    price: 400,
+    rating: "3.2",
+    arrimg: babytoy1,
+    qnty: 0,
+  },
+  {
+    id: 9,
+    rname: "Baby Toy Maggic",
+    imgdata: babytoy2,
+    address: "For 2 to 7 Years Old baby",
+    delimg: babytoy2,
+    somedata: "200 + order placed from here recently",
+    price: 300,
+    rating: "3.8",
+    arrimg: babytoy2,
+    qnty: 0,
+  },
+];
+
+export default Cardsdata;
