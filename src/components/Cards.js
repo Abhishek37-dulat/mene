@@ -175,7 +175,7 @@ const Cards = () => {
                 if (data?.product_categories[0]?.subCategories?.length > 0) {
                 } else {
                   return (
-                    <div className="hover-wishlist">
+                    <div className="hover-wishlist" key={index}>
                       <Saaa
                         key={data._id}
                         // className="cardOverlay"

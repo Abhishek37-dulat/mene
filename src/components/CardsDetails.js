@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 // import { DLT, ADD, REMOVE } from "../redux/actions/action";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 // import ReactImageMagnifier from "react-image-magnifier";
-import ReactImgZoom from "react-img-zoom";
+import ReactImageMagnify from "react-image-magnify";
 
 import {
   ADD,
@@ -112,6 +112,27 @@ const CardsDetails = () => {
                 })}
               </div>
               <div className="items_img">
+                <div className="items_img">
+                  <ReactImageMagnify
+                    {...{
+                      smallImage: {
+                        alt: "ourprod1",
+                        isFluidWidth: true,
+                        src: `${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`,
+                      },
+                      largeImage: {
+                        src: `${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`,
+                        width: 1200,
+                        height: 1800,
+                      },
+                      lensStyle: {
+                        width: 360,
+                        height: 200,
+                      },
+                    }}
+                  />
+                </div>
+
                 <img
                   src={`${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`}
                   alt="sadada"

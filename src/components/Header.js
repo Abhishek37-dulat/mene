@@ -107,7 +107,7 @@ const Header = () => {
               footerData?.map((data, index) => {
                 if (data?.categorie === "Logo") {
                   return (
-                    <Link to="/" className="logo">
+                    <Link to="/" className="logo" key={index}>
                       <img
                         src={`${process.env.REACT_APP_BACKEND_URL}/images/${
                           data?.post_image ? data?.post_image[0] : ""
