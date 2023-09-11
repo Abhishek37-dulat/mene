@@ -24,7 +24,7 @@ const HairTopper = () => {
     // dispatch(DISPLAY(e));
   };
 
-  const getdata = useSelector((state) => state.cartreducer.carts);
+  const getdata = useSelector((state) => state?.cartreducer?.carts);
 
   const compare = () => {
     let comparedata = getdata.filter((e) => {

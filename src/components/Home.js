@@ -15,15 +15,121 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { getAllPost } from "../redux/actions/PostAction";
 import ServicesTags from "./ServicesTags";
+import men from "../images/hair_loss_in_men-removebg-preview.png";
+import women from "../images/iStock-1221628227-removebg-preview.png";
+import { AiOutlineClose } from "react-icons/ai";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { PostData } = useSelector((state) => state.PostReducer);
+  const [isPopupOpen, setPopupOpen] = useState(true);
+  const [popupDataMale, setPopupDataMale] = useState([]);
+  const [popupDataFemale, setPopupDataFemale] = useState([]);
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
   useEffect(() => {
     dispatch(getAllPost());
   }, [dispatch]);
+  useEffect(() => {
+    setPopupDataMale(
+      PostData.filter((data) => data.categorie === "Male image")
+    );
+    setPopupDataFemale(
+      PostData.filter((data) => data.categorie === "Female image")
+    );
+  }, [setPopupDataMale, setPopupDataFemale, PostData]);
+  console.log("popupData: ", popupDataMale, popupDataFemale);
+
   return (
     <>
+      <div className="container-fluid">
+        {isPopupOpen && (
+          <div className="popup">
+            <div className="popup-content">
+              <div className="d-flex justify-content-end">
+                <AiOutlineClose className="closebutton" onClick={closePopup} />
+              </div>
+
+              <div className="row">
+                <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12  d-flex align-items-center justify-content-center">
+                  <h4
+                    style={{
+                      fontWeight: "600",
+                      fontSize: "24px",
+                    }}
+                  >
+                    Select your Gender
+                  </h4>
+                </div>
+              </div>
+
+              <div className="row py-4">
+                <div
+                  className="col-12 col-sm-12 col-lg-6 col-xl-6 main-male"
+                  style={{
+                    width: "50%",
+                    height: "400px",
+                  }}
+                >
+                  <div
+                    className="malediv"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
+                        popupDataMale.length > 0
+                          ? popupDataMale[0]?.post_image
+                            ? popupDataMale[0]?.post_image[0]
+                            : ""
+                          : ""
+                      }`}
+                      alt="men"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+
+                    <button className="malebtn">Male</button>
+                  </div>
+                </div>
+
+                <div
+                  className="col-12 col-sm-12 col-lg-6 col-xl-6 main-female"
+                  style={{
+                    width: "50%",
+                    height: "400px",
+                  }}
+                >
+                  <div
+                    className="femalediv"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                  >
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
+                        popupDataFemale.length > 0
+                          ? popupDataFemale[0]?.post_image
+                            ? popupDataFemale[0]?.post_image[0]
+                            : ""
+                          : ""
+                      }`}
+                      alt="women"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                    <button className="femalebtn">Female</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <div>
         <Banner />
       </div>

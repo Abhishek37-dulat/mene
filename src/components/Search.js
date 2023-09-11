@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { InputBase, Box, styled, List, ListItem } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { getSingleProduct } from "../redux/actions/productAction";
 
 const SearchContainer = styled(Box)(({ theme }) => ({
   background: "#fff",
@@ -76,9 +77,10 @@ const ListWrapper = styled(List)(({ theme }) => ({
 
 const Search = () => {
   const searchRef = useRef();
-  const [query, setQuery] = useState(["ghcghcc", "jhbjhbhu", "hjjnkj"]);
+  const [query, setQuery] = useState("");
   const { id } = useParams();
   const dispatch = useDispatch();
+  const { ProductData } = useSelector((state) => state.ProductReducer);
 
   const compare = () => {
     // let comparedata = getdata.filter((e) => {
@@ -87,16 +89,23 @@ const Search = () => {
     // setQuery(comparedata);
   };
 
-  // const send = (e) => {
-  //   searchRef.current.style.display = "none";
-
-  //   dispatch(DISPLAY(e));
-  // };
+  const send = (e) => {
+    searchRef.current.style.display = "none";
+    setQuery("");
+    dispatch(getSingleProduct(e));
+  };
+  // useEffect(() => {
+  //   const data = ProductData?.map((data) => {
+  //     return data?.product_title;
+  //   });
+  //   setQuery(data);
+  // }, [setQuery, ProductData]);
 
   return (
     <SearchContainer>
       <InputSearchBase
         placeholder="Search for products, brands and more"
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       <SearchIconWrapper>
@@ -104,23 +113,23 @@ const Search = () => {
       </SearchIconWrapper>
       {query && (
         <ListWrapper ref={searchRef}>
-          {/* {productsData
-            .filter((data) => data.title.toLowerCase().includes(query))
-            .map((data, index) => (
-              <ListItem key={index}>
-                <Link
-                  to={`/cart/${data.id}`}
-                  onClick={() => send(data)}
-                  style={{
-                    textDecoration: "none",
-                    color: "#000",
-                    zIndex: "999",
-                  }}
-                >
-                  {data.title}
-                </Link>
-              </ListItem>
-            ))} */}
+          {ProductData?.filter((data) =>
+            data.product_title.toLowerCase().includes(query)
+          ).map((data, index) => (
+            <ListItem key={index}>
+              <Link
+                to={`/cart/${data._id}`}
+                onClick={() => send(data)}
+                style={{
+                  textDecoration: "none",
+                  color: "#000",
+                  zIndex: "999",
+                }}
+              >
+                {data.product_title}
+              </Link>
+            </ListItem>
+          ))}
         </ListWrapper>
       )}
     </SearchContainer>

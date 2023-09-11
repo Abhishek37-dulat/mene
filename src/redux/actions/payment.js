@@ -1,11 +1,8 @@
 import axios from "axios";
 import * as actionType from "../constants/productConstants";
 
-import { placeNewOrder } from "./CheckOutAction";
-import { setEmptyCart } from "./cartAction";
-
-const url = process.env.REACT_APP_BACKEND_URL;
-// const url = "http://localhost:5643";
+// const url = process.env.REACT_APP_BACKEND_URL;
+const url = "http://localhost:5643";
 
 export const getApiKey = (senddata, cartdata) => async (dispatch) => {
   try {
@@ -24,10 +21,10 @@ export const getApiKey = (senddata, cartdata) => async (dispatch) => {
       description: "Meneology of RazorPay",
       image: "https://avatars.githubusercontent.com/u/7713209?s=200&v=4",
       order_id: dataorder.data.order.id,
-      callback_url: `${url}/api/paymentverification`,
+      callback_url: "http://localhost:5643/api/paymentverification",
       prefill: {
-        name: "Gaurav Kumar",
-        email: "gaurav.kumar@example.com",
+        name: "Abhishek Dulat",
+        email: "AbhishekDulat@example.com",
         contact: "9999999999",
       },
       notes: {
@@ -38,19 +35,8 @@ export const getApiKey = (senddata, cartdata) => async (dispatch) => {
       },
     };
     const razor = new window.Razorpay(options);
-    razor.on("payment.failed", async (response) => {
-      console.log("Payment failed:", response.error);
-    });
-    razor.on("payment.success", async (response) => {});
-    razor
-      .open()
-      .then((res) => {
-        dispatch(placeNewOrder(senddata));
-        dispatch(setEmptyCart(cartdata));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    razor.open();
 
     // dispatch({ type: actionType.GET_ALL_PRODUCTS, payload: data.data });
   } catch (error) {

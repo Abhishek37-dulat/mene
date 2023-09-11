@@ -2,8 +2,9 @@ import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import { styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Image = styled("img")(({ theme }) => ({
   width: "100%",
@@ -19,6 +20,50 @@ const Image = styled("img")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     objectFit: "cover",
     height: 220,
+  },
+}));
+
+const MainBannerBox = styled(Box)(({ theme }) => ({
+  position: "relative",
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  // border: "1px solid black",
+  "& > div": {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.2)",
+    "& > div": {
+      position: "absolute",
+      top: "40%",
+      width: "50%",
+      height: "60%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      textAlign: "center",
+      // backgroundColor: "rgba(0,0,0,0.2)",
+      "&>button": {
+        color: "#FF6900",
+        backgroundColor: "rgba(255,255,255,0.8)",
+        boxShadow: "0px 0px 5px rgba(0,0,0,0.5)",
+        marginTop: "30px",
+        padding: "10px 20px",
+        "&:hover": {
+          backgroundColor: "#FF6900",
+          color: "rgba(255,255,255,0.8)",
+        },
+      },
+    },
   },
 }));
 
@@ -38,7 +83,19 @@ const responsive = {
 };
 
 const Banner = () => {
+  const navigate = useNavigate();
   const { BannerData } = useSelector((state) => state.BannerReducer);
+
+  const handleShopNow = (data) => {
+    if (data?.categories.length > 0 && data?.categories[0]?.name) {
+      localStorage.removeItem("ATC");
+      localStorage.setItem("ATC", data?.categories[0]?.name);
+      navigate(`/collection/${data?.categories[0]?.name}`);
+    } else {
+      navigate(`/`);
+    }
+  };
+  console.log(BannerData);
 
   return (
     <Carousel
@@ -55,11 +112,36 @@ const Banner = () => {
       containerClass="carousel-container"
     >
       {BannerData?.map((data, index) => (
-        <Image
-          src={`${process.env.REACT_APP_BACKEND_URL}/images/${data?.banner_image[0]}`}
-          key={data?._id}
-          alt={`banner-${data?._id}`}
-        />
+        <MainBannerBox>
+          <Image
+            src={`${process.env.REACT_APP_BACKEND_URL}/images/${data?.banner_image[0]}`}
+            key={data?._id}
+            alt={`banner-${data?._id}`}
+          />
+          <Box>
+            <Box>
+              <Typography
+                style={{
+                  color: "#fff",
+                  fontSize: "42px",
+                  fontFamily: "'Black Ops One', cursive",
+                }}
+              >
+                {data?.title ? data.title : ""}
+              </Typography>
+              <Typography
+                style={{
+                  color: "#fff",
+                  fontSize: "28px",
+                  fontFamily: "'Inria Sans', sans-seri",
+                }}
+              >
+                {data?.description ? data.description : ""}
+              </Typography>
+              <Button onClick={() => handleShopNow(data)}>Shop now</Button>
+            </Box>
+          </Box>
+        </MainBannerBox>
       ))}
     </Carousel>
   );

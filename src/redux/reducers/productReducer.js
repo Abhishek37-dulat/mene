@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 const initialState = {
   ProductData: [],
   singleProduct: null,
+  searchData:[]
 };
 const customSuccessToastStyleSuccess = {
   background: "#4CAF50",

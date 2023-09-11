@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Black+Ops+One&family=Inria+Sans&display=swap");
 
 * {
   font-family: "Archivo Narrow", sans-serif;
@@ -819,7 +819,7 @@ label {
   width: 520px;
   box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
   padding-top: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 100px;
   border-radius: 8px;
   background-color: white;
 }
@@ -915,4 +915,116 @@ label {
 }
 .hover-wishlist:hover .hide {
   display: block;
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 80%;
+}
+.bannerBtn:hover {
+  background: #fff;
+  color: #000;
+}
+.closebutton {
+  font-size: 24px;
+  cursor: pointer;
+}
+.main-male {
+  position: relative;
+}
+.main-male:hover .malediv {
+  display: block;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.malebtn {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 1.2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 28px;
+  font-weight: 600;
+  height: 60px;
+  width: 140px;
+  align-items: center;
+  top: 30%;
+  left: 38%;
+}
+.main-male:hover .malebtn {
+  opacity: 0.5;
+}
+.malediv:hover img {
+  opacity: 0.5;
+}
+
+.main-female {
+  position: relative;
+}
+.main-female:hover .femalediv {
+  display: block;
+  background: rgba(0, 0, 0, 0.3);
+}
+.femalebtn {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 1.2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 28px;
+  font-weight: 600;
+  height: 60px;
+  width: 140px;
+  align-items: center;
+  top: 30%;
+  right: 40%;
+}
+.main-female:hover .femalebtn {
+  opacity: 0.5;
+}
+.femalediv:hover img {
+  opacity: 0.5;
+}
+.pageNotFound:hover {
+  background: #000;
+  color: #fff;
+}
+
+.dark-theme {
+  background-color: #333;
+  color: #fff;
+}
+
+.theme-toggle-button {
+  color: #000;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 26px;
+}
+
+body {
+  transition: background-color 0.3s, color 0.3s;
 }

@@ -5,6 +5,8 @@ import Modal from "react-bootstrap/Modal";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getApiKey } from "../redux/actions/payment";
+import { Place } from "@mui/icons-material";
+import { placeNewOrder } from "../redux/actions/CheckOutAction";
 
 const FinalOrder = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const FinalOrder = (props) => {
         pin_code: props?.finaladdressdata?.pin_code,
       },
     };
-
+    dispatch(placeNewOrder(sendData));
     dispatch(getApiKey(sendData, props.carts));
   };
 

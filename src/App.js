@@ -41,6 +41,8 @@ import PaymentSuccess from "./components/pages/PaymentSuccess";
 import PaymentFailed from "./components/pages/PaymentFailed";
 import { getAllBanner } from "./redux/actions/BannerAction";
 import { getAllPost } from "./redux/actions/PostAction";
+import GenderCollection from "./components/pages/GenderCollection";
+import NotFoundPage from "./components/pages/NotFoundPage";
 // import { useDispatch, useSelector } from "react-redux";
 
 // import { getAllProduct } from "./redux/actions/productAction";
@@ -82,7 +84,6 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
-        <Route path="/paymentfailed" element={<PaymentFailed />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -97,6 +98,8 @@ function App() {
         <Route path="/terms-of-services" element={<TermsOfServices />} />
         <Route path="/why-maneology" element={<WhyManeologyCompany />} />
         <Route path="/before-and-after" element={<BeforeAfter />} />
+        <Route path="/gendercollection" element={<GenderCollection />} />
+        <Route path="*" element={<NotFoundPage />} />
         <Route
           path="/return-and-exchange-policy"
           element={<ReturnAndExchangePolicy />}

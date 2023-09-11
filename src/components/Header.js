@@ -23,6 +23,7 @@ import {
   GetCartData,
 } from "../redux/actions/cartAction";
 import { getAllPost } from "../redux/actions/PostAction";
+import ThemeChanger from "./ThemeChanger";
 
 const Header = () => {
   const history = useNavigate();
@@ -539,6 +540,7 @@ const Header = () => {
                 </div>
               )}
             </Menu>
+            <ThemeChanger />
           </Container>
         </Navbar>
       </div>

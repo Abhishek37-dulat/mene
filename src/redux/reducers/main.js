@@ -7,6 +7,7 @@ import { AddressReducer } from "./AddressReducer";
 import { CheckOutReducer } from "./CheckOutReducer";
 import { BannerReducer } from "./BannerReducer";
 import { PostReducer } from "./PostReducer";
+import { CommentReducer } from "./CommentReducer";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
@@ -18,6 +19,7 @@ const rootred = combineReducers({
   CheckOutReducer,
   BannerReducer,
   PostReducer,
+  CommentReducer,
 });
 
 const middleware = [thunk];

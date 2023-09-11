@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // import { DLT, ADD, REMOVE } from "../redux/actions/action";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 // import ReactImageMagnifier from "react-image-magnifier";
 import ReactImageMagnify from "react-image-magnify";
+import CustomerComments from "./CustomerComments";
+import CustomerReview from "./CustomerReview";
 
 import {
   ADD,
@@ -19,6 +22,7 @@ import {
 // import CustomerComments from "./CustomerComments";
 // import ProductColor from "./ProductColor";
 import { getSingleProduct } from "../redux/actions/productAction";
+import StepVideo from "./StepVideo";
 // import ZoomCom from "./ZoomCom";
 
 const CardsDetails = () => {
@@ -48,7 +52,7 @@ const CardsDetails = () => {
   console.log("singleProduct: ", singleProduct);
 
   const compare = () => {
-    let comparedata = carts.filter((e) => {
+    let comparedata = carts?.filter((e) => {
       return e.id === id;
     });
     setData(comparedata);
@@ -68,7 +72,7 @@ const CardsDetails = () => {
       setLocalData(tempDataFormat);
       return carts?.length > 0
         ? carts?.map((data) => {
-            if (data.product_id === tempDataFormat._id) {
+            if (data?.product_id === tempDataFormat?._id) {
               setToggleAddToCart(false);
             }
           })
@@ -132,11 +136,6 @@ const CardsDetails = () => {
                     }}
                   />
                 </div>
-
-                <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`}
-                  alt="sadada"
-                />
               </div>
               <div className="details">
                 <div className="row">
@@ -281,9 +280,10 @@ const CardsDetails = () => {
             <Button style={{ background: "#ff6900" }}>Continue Shopping</Button>
           </NavLink> */}
         </div>
+        <StepVideo />
         {/* <SuggestProducts /> */}
-        {/* <CustomerReview /> */}
-        {/* <CustomerComments /> */}
+        <CustomerReview />
+        <CustomerComments />
       </div>
     </>
   );

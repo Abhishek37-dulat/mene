@@ -39,3 +39,20 @@ export const getAllOrders = () => async (dispatch) => {
     dispatch({ type: actionType.ERROR_GET_NEW_ORDER, error: error });
   }
 };
+
+export const cancelOrder = (id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const data = await axios.put(`${url}/checkout/${id}`, null, {
+      headers,
+    });
+    console.log(data);
+
+    dispatch({ type: actionType.CANCEL_NEW_ORDER, payload: data.data.data });
+  } catch (error) {
+    dispatch({ type: actionType.ERROR_CANCEL_NEW_ORDER, error: error });
+  }
+};

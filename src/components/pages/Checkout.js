@@ -18,7 +18,7 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState();
   const [modalShow, setModalShow] = useState(false);
-  const getdata = useSelector((state) => state.cartreducer.carts);
+  const getdata = useSelector((state) => state?.cartreducer?.carts);
   const [price, setPrice] = useState(0);
   const [dPrice, setDPrice] = useState(0);
   const [logindata, setLoginData] = useState([]);
@@ -27,9 +27,9 @@ const Checkout = () => {
   const { accountStatus, userDetails, setUserDetails } =
     useContext(DataContext);
   const [toggleAddress, setToggleAddress] = useState(false);
-  const { UserAddress } = useSelector((state) => state.AddressReducer);
-  const { carts } = useSelector((state) => state.cartReducers);
-  const { ProductData } = useSelector((state) => state.ProductReducer);
+  const { UserAddress } = useSelector((state) => state?.AddressReducer);
+  const { carts } = useSelector((state) => state?.cartReducers);
+  const { ProductData } = useSelector((state) => state?.ProductReducer);
   const [finalAddressData, setFinalAddressData] = useState();
   const [saveAddress, setSaveAddress] = useState({
     address: "",
@@ -40,8 +40,6 @@ const Checkout = () => {
   const [finalProductData, setFinalProductData] = useState([]);
   const finalP = Number(price) + Number(dPrice);
   const selectAddress = useRef();
-
-  console.log(carts);
 
   var todayDate = new Date().toISOString().slice(0, 10);
   console.log("address", UserAddress, userDetails);
@@ -85,7 +83,7 @@ const Checkout = () => {
   }, []);
   useEffect(() => {
     let p = 0;
-    carts.map((ele) => {
+    carts?.map((ele) => {
       let product = ProductData?.find((e) => ele?.product_id === e?._id);
       p =
         (product?.product_price -
@@ -253,7 +251,7 @@ const Checkout = () => {
                 style={{ background: "#ff6900" }}
               >
                 <div className="row">
-                  {carts.map((d, index) => {
+                  {carts?.map((d, index) => {
                     const product = ProductData?.find(
                       (e) => d?.product_id === e?._id
                     );

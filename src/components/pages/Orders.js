@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllOrders } from "../../redux/actions/CheckOutAction";
+import { getAllOrders, cancelOrder } from "../../redux/actions/CheckOutAction";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -18,6 +18,9 @@ const Orders = () => {
   };
   const handleShowList = (e) => {
     setToggleOrderList(!toggleOrderList);
+  };
+  const handlecancelOrder = (id) => {
+    dispatch(cancelOrder(id));
   };
 
   useEffect(() => {
@@ -55,7 +58,6 @@ const Orders = () => {
                 border: "5px solid rgba(0,0,0,0.2)",
               }}
             >
-              <th style={{ textAlign: "center" }}>Order Id</th>
               <th style={{ textAlign: "center" }}>Product Name</th>
               <th style={{ textAlign: "center" }}>Total</th>
               <th style={{ textAlign: "center" }}>Order Date</th>
@@ -65,60 +67,77 @@ const Orders = () => {
           </thead>
           <tbody>
             {OrderData?.map((item, index) => {
-              return (
-                <>
-                  <tr
-                    key={item._id}
-                    style={{
-                      cursor: "pointer",
-                      backgroundColor: "#fff",
-                      boxShadow: "0px 0px 5px rgba(0,0,0,0.2)",
-                      border: "5px solid rgba(0,0,0,0.2)",
-                    }}
-                    onClick={(e) => handleShowList(e)}
-                  >
-                    <td style={{ textAlign: "center", padding: "20px 10px" }}>
-                      {item?.order_id}
-                    </td>
-                    <td style={{ textAlign: "center", padding: "20px 0px" }}>
-                      {item?.items
-                        ?.map((item) => {
+              if (item.order_status === "NEW")
+                return (
+                  <>
+                    <tr
+                      key={item._id}
+                      style={{
+                        cursor: "pointer",
+                        backgroundColor: "#fff",
+                        boxShadow: "0px 0px 5px rgba(0,0,0,0.2)",
+                        border: "5px solid rgba(0,0,0,0.2)",
+                      }}
+                      onClick={(e) => handleShowList(e)}
+                    >
+                      <td
+                        style={{
+                          textAlign: "flex-start",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        {item?.items?.map((item, index) => {
                           const product = ProductData?.find(
                             (d) => d?._id === item?.product_id
                           );
-                          return product?.product_title;
-                        })
-                        .join("  ,   ")}
-                    </td>
-                    <td style={{ textAlign: "center", padding: "20px 0px" }}>
-                      {item?.total_amount}
-                    </td>
-                    <td style={{ textAlign: "center", padding: "20px 0px" }}>
-                      {item?.createdAt.substring(0, 10)}
-                    </td>
-                    <td style={{ textAlign: "center", padding: "20px 0px" }}>
-                      {item?.ShipStatus}
-                    </td>
-                    <td
-                      style={{ textAlign: "center", padding: "20px 0px" }}
-                      onClick={() => dlt(item?.order_id)}
-                    >
-                      <button
-                        style={{
-                          outline: "none",
-                          border: "none",
-                          borderRadius: "5px",
-                          backgroundColor: "red",
-                          color: "#fff",
-                        }}
+                          return (
+                            <div>
+                              <img
+                                style={{ width: "50px", height: "50px" }}
+                                src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                                alt="imagedfd"
+                              />
+                              {product?.product_title}
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td style={{ textAlign: "center", padding: "20px 0px" }}>
+                        {item?.total_amount}
+                      </td>
+                      <td style={{ textAlign: "center", padding: "20px 0px" }}>
+                        {item?.createdAt.substring(0, 10)}
+                      </td>
+                      <td style={{ textAlign: "center", padding: "20px 0px" }}>
+                        {item?.order_status}
+                      </td>
+                      <td
+                        style={{ textAlign: "center", padding: "20px 0px" }}
+                        onClick={() => dlt(item?.order_id)}
                       >
-                        Cencel
-                      </button>
-                    </td>
-                  </tr>
-                  {toggleOrderList ? <tr>Helooo</tr> : null}
-                </>
-              );
+                        {item?.order_status === "CANCELED" ? (
+                          ""
+                        ) : (
+                          <button
+                            style={{
+                              outline: "none",
+                              border: "none",
+                              borderRadius: "5px",
+                              backgroundColor: "red",
+                              color: "#fff",
+                            }}
+                            onClick={() => handlecancelOrder(item._id)}
+                          >
+                            Cencel
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                    {/* {toggleOrderList ? <tr>Helooo</tr> : null} */}
+                  </>
+                );
             })}
           </tbody>
         </Table>
