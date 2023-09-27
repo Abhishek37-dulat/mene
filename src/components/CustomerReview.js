@@ -1,18 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector } from "react-redux";
 import WriteReview from "./WriteReview";
+import { DataContext } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 // import CustomerComments from "./CustomerComments";
 
-const CustomerReview = () => {
+const CustomerReview = ({ productID }) => {
   // const getdata = useSelector((state) => state.cartreducer.carts);
-
+  const [showReview, setShowReview] = useState(false);
+  const { accountStatus, setUserDetails, account, userDetails } =
+    useContext(DataContext);
+  const navigate = useNavigate();
   const now5 = 100;
   const now4 = 80;
   const now3 = 50;
   const now2 = 20;
   const now1 = 10;
+  console.log("Account Data", accountStatus);
+  const handleOnWriteReview = () => {
+    if (accountStatus) {
+      setShowReview(true);
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <>
@@ -114,7 +127,7 @@ const CustomerReview = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 py-4 align-items-center justify-content-center">
             <button
               type="button"
               className="btn"
@@ -126,19 +139,26 @@ const CustomerReview = () => {
                 height: "40px",
                 background: "#fff",
               }}
+              onClick={() => handleOnWriteReview()}
             >
               Write Review
             </button>
-            <div
-              className="modal fade"
-              id="exampleModalLong"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLongTitle"
-              aria-hidden="true"
-            >
-              <WriteReview />
-            </div>
+            {showReview ? (
+              <div
+                className="modal fade"
+                id="exampleModalLong"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLongTitle"
+                aria-hidden={showReview}
+              >
+                <WriteReview
+                  showReview={showReview}
+                  setShowReview={setShowReview}
+                  productID={productID}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

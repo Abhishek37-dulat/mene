@@ -9,6 +9,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import ReactImageMagnify from "react-image-magnify";
 import CustomerComments from "./CustomerComments";
 import CustomerReview from "./CustomerReview";
+import ProductColor from "./ProductColor";
 
 import {
   ADD,
@@ -23,6 +24,8 @@ import {
 // import ProductColor from "./ProductColor";
 import { getSingleProduct } from "../redux/actions/productAction";
 import StepVideo from "./StepVideo";
+import { AddToSaveData, RemoveFromSaveData } from "../redux/actions/SaveAction";
+import { getAllComments } from "../redux/actions/CommentAction";
 // import ZoomCom from "./ZoomCom";
 
 const CardsDetails = () => {
@@ -34,12 +37,26 @@ const CardsDetails = () => {
   const [localData, setLocalData] = useState();
   const [zoomed, setZoomed] = useState(false);
   const { id } = useParams();
+  const { CommentData } = useSelector((state) => state.CommentReducer);
+  const [comments, setComments] = useState([]);
+  const { saveData } = useSelector((state) => state.saveReducers);
+  const [avgRating, setAvgRating] = useState(0);
+  const [selectedColorf, setSelectedColorf] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedDensity, setSelectedDensity] = useState("");
 
   const dispatch = useDispatch();
   const send = (data) => {
     const localToken = localStorage.getItem("token");
     if (localToken) {
-      dispatch(ADD(data));
+      const finalData = {
+        product_id: data?._id,
+        color: selectedColorf,
+        size: selectedSize,
+        density: selectedDensity,
+      };
+      console.log(finalData, data);
+      dispatch(ADD(finalData));
       dispatch(GetCartData());
     } else {
       history("/login");
@@ -60,6 +77,21 @@ const CardsDetails = () => {
 
   const handleChangeImage = (productId) => {
     setChangeImage(productId);
+  };
+
+  const handleCallFav = (id) => {
+    dispatch(AddToSaveData(id));
+  };
+  const handleCallFavDelete = (id) => {
+    console.log("i am called");
+    dispatch(RemoveFromSaveData(id));
+  };
+  const handleChangeDensity = (e) => {
+    setSelectedDensity(e.target.value);
+  };
+  const handleChangeSize = (e) => {
+    console.log(e.target.value);
+    setSelectedSize(e.target.value);
   };
 
   useEffect(() => {
@@ -87,8 +119,20 @@ const CardsDetails = () => {
   }, [dispatch]);
   useEffect(() => {
     dispatch(GetCartData());
-  }, [dispatch]);
 
+    const tempData = localStorage.getItem("singleproduct");
+    const tempDataFormat = JSON.parse(tempData);
+    dispatch(getAllComments(tempDataFormat?._id));
+  }, [dispatch, singleProduct]);
+  console.log(
+    "color: ",
+    selectedColorf,
+    "Density:",
+    selectedDensity,
+    "Size: ",
+    selectedSize,
+    singleProduct
+  );
   return (
     <>
       <div className="container-fluid mt-2">
@@ -180,8 +224,12 @@ const CardsDetails = () => {
                     <div className="wishlist-icon">
                       <AiFillHeart
                         style={{ fontSize: "25px", color: "#ff6900" }}
+                        onClick={() => handleCallFav(singleProduct?._id)}
                       />
-                      <AiOutlineHeart style={{ fontSize: "25px" }} />
+                      <AiOutlineHeart
+                        style={{ fontSize: "25px" }}
+                        onClick={() => handleCallFavDelete(singleProduct?._id)}
+                      />
                     </div>
                     <p
                       style={{
@@ -197,42 +245,68 @@ const CardsDetails = () => {
                     <div className="details_desc">
                       <p>{singleProduct?.product_description}</p>
                     </div>
-                    {/* <p>
-                          <strong>Total : </strong>₹ {ele.price * ele.qnty}
-                        </p> */}
-                    {/* <ProductColor /> */}
+                    <div className="d-flex">
+                      <p style={{ fontWeight: "600" }}>Choose Density </p>
 
-                    {/* <div
-                          className="mt-5 d-flex justify-content-between align-items-center increaseProducts mx-2"
-                          style={{
-                            width: 100,
-                            cursor: "pointer",
-                            background: "#ddd",
-                            border: "1px solid #ff6900",
-                            borderRadius: "50px",
-                            color: "#111",
-                            marginBottom: "10px",
-                            top: "20px",
-                          }}
+                      <div className="density">
+                        <select
+                          id="density"
+                          value={selectedDensity}
+                          onChange={handleChangeDensity}
                         >
-                          <span
-                            style={{ fontSize: 24, marginLeft: "10px" }}
-                            onClick={
-                              ele.qnty <= 1
-                                ? () => dlt(ele.id)
-                                : () => remove(ele)
-                            }
-                          >
-                            -
-                          </span>
-                          <span style={{ fontSize: 24 }}>{ele.qnty}</span>
-                          <span
-                            style={{ fontSize: 24, marginRight: "10px" }}
-                            onClick={() => send(ele)}
-                          >
-                            +
-                          </span>
-                        </div> */}
+                          <option value="low">Low</option>
+                          <option value="medium">Medium</option>
+                          <option value="high">High</option>
+                        </select>
+                      </div>
+                      {selectedDensity}
+                    </div>
+
+                    <div className="d-flex">
+                      <p style={{ fontWeight: "600" }}>Size </p>
+                      <div
+                        className="density"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {singleProduct?.product_size_tags?.map((data) => {
+                          return (
+                            <div
+                              style={{
+                                padding: "5px 10px",
+                                boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
+                                marginLeft: "5px",
+                                cursor: "pointer",
+                                marginTop: "4px",
+                              }}
+                            >
+                              <input
+                                type="radio"
+                                name="size"
+                                value={data?.size}
+                                onChange={handleChangeSize}
+                              />
+                              &#160;&#160;{data?.size} {data?.type}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div>
+                      <p style={{ fontWeight: "600" }}>
+                        Choose Color:{" "}
+                        <ProductColor
+                          selectedColorf={selectedColorf}
+                          setSelectedColorf={setSelectedColorf}
+                        />
+                      </p>
+                    </div>
+
                     {toggleAddToCart ? (
                       <button
                         style={{
@@ -280,10 +354,10 @@ const CardsDetails = () => {
             <Button style={{ background: "#ff6900" }}>Continue Shopping</Button>
           </NavLink> */}
         </div>
-        <StepVideo />
+        <StepVideo stepdata={singleProduct?.product_steps} />
         {/* <SuggestProducts /> */}
-        <CustomerReview />
-        <CustomerComments />
+        <CustomerReview productID={singleProduct?._id} />
+        <CustomerComments productID={singleProduct?._id} />
       </div>
     </>
   );

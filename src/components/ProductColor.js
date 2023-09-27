@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { colors } from ".././Constants/ColorData";
 
-const ProductColor = () => {
+const ProductColor = ({ selectedColorf, setSelectedColorf }) => {
   const [selectedColor, setSelectedColor] = useState("");
 
   const handleClick = (colorName) => {
     setSelectedColor(colorName);
+    setSelectedColorf(colorName);
   };
 
   return (

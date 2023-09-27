@@ -1,17 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllComments } from "../redux/actions/CommentAction";
 import Rating from "@mui/material/Rating";
 import { Box, Button, Typography } from "@mui/material";
 
-const CustomerComments = () => {
+const CustomerComments = ({ productID }) => {
   const dispatch = useDispatch();
   const { CommentData } = useSelector((state) => state.CommentReducer);
-  const { ProfileData } = useSelector((state) => state.ProfileReducer);
+  const [comments, setComments] = useState([]);
   useEffect(() => {
-    dispatch(getAllComments());
+    dispatch(getAllComments(productID));
   }, [dispatch]);
-  console.log(CommentData, ProfileData);
+  useEffect(() => {
+    CommentData?.map((temp) => {
+      console.log(temp.productID);
+    });
+  }, [dispatch]);
   return (
     <>
       <div>
@@ -48,9 +52,7 @@ const CustomerComments = () => {
                       style={{ width: "100px" }}
                     />
                     <Typography>{data?.comment}</Typography>
-                    <Typography style={{ marginTop: "20px" }}>
-                      {ProfileData?.first_name} {ProfileData?.last_name}
-                    </Typography>
+
                     <Box
                       style={{
                         width: "100%",
@@ -59,8 +61,8 @@ const CustomerComments = () => {
                         justifyContent: "flex-end",
                       }}
                     >
-                      <Button>Edit</Button>
-                      <Button>Delete</Button>
+                      {/* <Button>Edit</Button>
+                      <Button>Delete</Button> */}
                     </Box>
                   </div>
                 );

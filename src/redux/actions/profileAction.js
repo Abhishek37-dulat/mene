@@ -13,7 +13,7 @@ export const GetProfileData = () => async (dispatch) => {
       Authorization: `Bearer ${token}`,
     };
     const data = await axios.get(`${url}/profile`, { headers });
-    console.log(":::::::::::::::::::::", data);
+    console.log("profile Dataaaaaa:::::::::::::::::::::", data);
     dispatch({ type: actionType.GET_PROFILE, payload: data.data.data });
   } catch (error) {
     dispatch({ type: actionType.ERROR_GET_PROFILE, error: error });

@@ -62,8 +62,29 @@ const MainBannerBox = styled(Box)(({ theme }) => ({
           backgroundColor: "#FF6900",
           color: "rgba(255,255,255,0.8)",
         },
+        [theme.breakpoints.down("md")]: {
+          marginTop: "10px",
+          padding: "2px 5px",
+        },
       },
     },
+  },
+}));
+
+const TitleText = styled(Box)(({ theme }) => ({
+  color: "#fff",
+  fontSize: "42px",
+  fontFamily: "'Black Ops One', cursive",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "12px",
+  },
+}));
+const DescriptionText = styled(Box)(({ theme }) => ({
+  color: "#fff",
+  fontSize: "28px",
+  fontFamily: "'Inria Sans', sans-seri",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "8px",
   },
 }));
 
@@ -120,24 +141,10 @@ const Banner = () => {
           />
           <Box>
             <Box>
-              <Typography
-                style={{
-                  color: "#fff",
-                  fontSize: "42px",
-                  fontFamily: "'Black Ops One', cursive",
-                }}
-              >
-                {data?.title ? data.title : ""}
-              </Typography>
-              <Typography
-                style={{
-                  color: "#fff",
-                  fontSize: "28px",
-                  fontFamily: "'Inria Sans', sans-seri",
-                }}
-              >
+              <TitleText>{data?.title ? data.title : ""}</TitleText>
+              <DescriptionText>
                 {data?.description ? data.description : ""}
-              </Typography>
+              </DescriptionText>
               <Button onClick={() => handleShopNow(data)}>Shop now</Button>
             </Box>
           </Box>

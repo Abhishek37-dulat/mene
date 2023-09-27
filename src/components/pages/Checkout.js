@@ -400,6 +400,7 @@ const Checkout = () => {
                     price={finalP}
                     carts={carts}
                     productdata={ProductData}
+                    delivery_charges={dPrice}
                     onHide={() => setModalShow(false)}
                   />
                 </div>

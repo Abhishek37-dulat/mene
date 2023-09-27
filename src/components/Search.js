@@ -11,18 +11,19 @@ const SearchContainer = styled(Box)(({ theme }) => ({
   borderRadius: "5px",
   marginLeft: "10px",
   display: "flex",
-  border: "1px solid #000",
-  [theme.breakpoints.down("sx")]: {
-    margin: 0,
-    display: "flex",
-    flexDirection: "row",
-    width: "200px",
-  },
+  boxShadow: "0px 0px 5px rgba(0,0,0,0.2)",
   [theme.breakpoints.down("md")]: {
     margin: 0,
+    marginLeft: "15px",
     display: "flex",
     flexDirection: "row",
-    width: "340px",
+    width: "240px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    margin: 0,
+    display: "flex",
+    flexDirection: "row",
+    width: "150px",
   },
 }));
 const InputSearchBase = styled(InputBase)(({ theme }) => ({

@@ -1,44 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import StarRating from "./StarRating";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { AiOutlinePlus } from "react-icons/ai";
 
 import Card from "react-bootstrap/Card";
+import { placeNewComment } from "../redux/actions/CommentAction";
 
-const WriteReview = ({ data }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+const WriteReview = ({ productID, showReview, setShowReview }) => {
+  const dispatch = useDispatch();
+  const [rating, setRating] = useState(0);
   const [flag, setFlag] = useState(false);
-  const [inputData, setInputData] = useState();
-  // const getdata = useSelector((state) => state.cartreducer.carts);
-  console.log(":::::::::::::::::dadadadad", data);
+  const [inputData, setInputData] = useState({
+    title: "",
+    comment: "",
+    productID: productID,
+  });
+  const [commentImage, setCommentImage] = useState(null);
+
   function handleData(e) {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!inputData.name || !inputData.feedback || inputData.image) {
+    if (!inputData.title || !inputData.comment || commentImage === null) {
       alert("Please Fill All Fields..");
     } else {
-      setFlag(true);
+      let data = {
+        title: inputData?.title,
+        comment: inputData?.comment,
+        rating: rating,
+        image: commentImage,
+        productID: productID,
+      };
+      dispatch(placeNewComment(data));
+      setShowReview(false);
     }
   }
-  const handleUpload = () => {
-    setSelectedFile(...selectedFile);
-    console.log("data is coming");
-  };
+
   function handleFileChange(event) {
+    const file = event.target.files[0];
+    setCommentImage(file);
     const image = document.getElementById("output");
     image.src = URL.createObjectURL(event.target.files[0]);
   }
   useEffect(() => {
     console.log("success");
-  }, [flag]);
+  }, [showReview]);
 
   return (
     <>
-      <div className="modal-dialog" role="document">
+      <div
+        className={`modal-dialog ${showReview ? "show" : ""}`}
+        role="document"
+      >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLongTitle">
@@ -50,7 +66,7 @@ const WriteReview = ({ data }) => {
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden={showReview}>&times;</span>
             </button>
           </div>
           <div className="modal-body">
@@ -69,11 +85,11 @@ const WriteReview = ({ data }) => {
                         position: "relative",
                       }}
                     >
-                      <StarRating />
+                      <StarRating rating={rating} setRating={setRating} />
                     </span>
                     <input
                       type="text"
-                      name="name"
+                      name="title"
                       onChange={handleData}
                       placeholder="Your Name"
                       style={{
@@ -83,11 +99,12 @@ const WriteReview = ({ data }) => {
                         borderRadius: "5px",
                       }}
                       className="commentName"
+                      value={inputData.title}
                     />
 
                     <textarea
                       type="text"
-                      name="feedback"
+                      name="comment"
                       onChange={handleData}
                       placeholder="Share your feedback with us"
                       style={{
@@ -97,6 +114,7 @@ const WriteReview = ({ data }) => {
                         borderRadius: "5px",
                       }}
                       className="commentArea"
+                      value={inputData.comment}
                     />
 
                     <div>
@@ -114,8 +132,9 @@ const WriteReview = ({ data }) => {
                     </p>
                     {/* <button onClick={handleUpload}>Upload</button> */}
                     <button
+                      data-dismiss="modal"
                       type="submit"
-                      onClick={handleUpload}
+                      onClick={handleSubmit}
                       style={{
                         width: "80px",
                         height: "40px",
@@ -133,31 +152,6 @@ const WriteReview = ({ data }) => {
               </form>
             </div>
           </div>
-
-          <pre>
-            {flag ? (
-              <>
-                <div className="container">
-                  <div className="row">
-                    <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                      <Card style={{ width: "18rem" }}>
-                        {selectedFile && (
-                          <Card.Img variant="top" src={handleUpload.image} />
-                        )}
-                        <Card.Body>
-                          <Card.Title>{inputData.name}</Card.Title>
-
-                          <Card.Text>{inputData.feedback}</Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              ""
-            )}
-          </pre>
         </div>
       </div>
     </>

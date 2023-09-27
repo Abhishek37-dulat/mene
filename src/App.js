@@ -43,14 +43,20 @@ import { getAllBanner } from "./redux/actions/BannerAction";
 import { getAllPost } from "./redux/actions/PostAction";
 import GenderCollection from "./components/pages/GenderCollection";
 import NotFoundPage from "./components/pages/NotFoundPage";
+import { GetSaveData } from "./redux/actions/SaveAction";
 // import { useDispatch, useSelector } from "react-redux";
 
 // import { getAllProduct } from "./redux/actions/productAction";
 
 function App() {
   const dispatch = useDispatch();
-  const { accountStatus, setUserDetails, account, userDetails } =
-    useContext(DataContext);
+  const {
+    accountStatus,
+    setUserDetails,
+    setAccountStatus,
+    account,
+    userDetails,
+  } = useContext(DataContext);
 
   useEffect(() => {
     dispatch(getAllProduct());
@@ -65,19 +71,22 @@ function App() {
       } else {
         console.log("userDetails: ==>", trydata);
         setUserDetails(trydata.userExits);
+        setAccountStatus(true);
+
         localStorage.setItem("userdata", JSON.stringify(trydata.userExits));
       }
     }
-  }, []);
+  }, [dispatch, setUserDetails]);
   useEffect(() => {
     dispatch(getAllBanner());
     dispatch(getAllPost());
+    dispatch(GetSaveData());
   }, [dispatch]);
 
   return (
     <>
       <ScrollTop />
-      {accountStatus && <Header />}
+      <Header />
       <Routes>
         <Route exact index path="/" element={<Home />} />
         <Route path="/cart/:id" element={<CardsDetails />} />
@@ -98,7 +107,7 @@ function App() {
         <Route path="/terms-of-services" element={<TermsOfServices />} />
         <Route path="/why-maneology" element={<WhyManeologyCompany />} />
         <Route path="/before-and-after" element={<BeforeAfter />} />
-        <Route path="/gendercollection" element={<GenderCollection />} />
+        <Route path="/gendercollection/:id" element={<GenderCollection />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route
           path="/return-and-exchange-policy"

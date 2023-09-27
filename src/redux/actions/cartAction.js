@@ -23,18 +23,26 @@ export const GetCartData = () => async (dispatch) => {
 
 export const ADD = (item) => async (dispatch) => {
   try {
-    console.log("asfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    const Cartdata = { product_id: item._id, total_count: 1 };
+    const Cartdata = {
+      product_id: item.product_id,
+      total_count: 1,
+      color: item.color,
+      size: item.size,
+      density: item.density,
+    };
     const data = await axios.post(`${url}/cart/cart`, Cartdata, { headers });
 
     const AddDataToCart = {
       product_id: data.data.data.product_id,
       total_count: data.data.data.total_count,
       _id: data.data.data._id,
+      color: data.data.data.color,
+      size: data.data.data.size,
+      density: data.data.data.density,
     };
     dispatch({ type: actionType.ADD_CART, payload: AddDataToCart });
   } catch (error) {
@@ -51,6 +59,9 @@ export const IncreaseItem = (item) => async (dispatch) => {
     const Cartdata = {
       product_id: item.product_id,
       total_count: item.total_count + 1,
+      color: item.color,
+      size: item.size,
+      density: item.density,
     };
     const data = await axios.put(`${url}/cart/cart/${item._id}`, Cartdata, {
       headers,
@@ -60,6 +71,9 @@ export const IncreaseItem = (item) => async (dispatch) => {
       product_id: data.data.data.product_id,
       total_count: data.data.data.total_count,
       _id: data.data.data._id,
+      color: data.data.data.color,
+      size: data.data.data.size,
+      density: data.data.data.density,
     };
     dispatch({ type: actionType.INCREASE_CART, payload: IncreaseDataToCart });
   } catch (error) {
@@ -82,12 +96,18 @@ export const DecreaseItem = (item) => async (dispatch) => {
         product_id: data.data.data.product_id,
         total_count: data.data.data.total_count,
         _id: data.data.data._id,
+        color: data.data.data.color,
+        size: data.data.data.size,
+        density: data.data.data.density,
       };
       dispatch({ type: actionType.REMOVE_CART, payload: DecDataToCart });
     } else {
       const Cartdata = {
         product_id: item.product_id,
         total_count: item.total_count - 1,
+        color: item.color,
+        size: item.size,
+        density: item.density,
       };
 
       const data = await axios.put(`${url}/cart/cart/${item._id}`, Cartdata, {
@@ -98,6 +118,9 @@ export const DecreaseItem = (item) => async (dispatch) => {
         product_id: data.data.data.product_id,
         total_count: data.data.data.total_count,
         _id: data.data.data._id,
+        color: data.data.data.color,
+        size: data.data.data.size,
+        density: data.data.data.density,
       };
       dispatch({ type: actionType.DEC_CART, payload: DecDataToCart });
     }
@@ -135,6 +158,9 @@ export const REMOVE = (item) => async (dispatch) => {
       product_id: data.data.data.product_id,
       total_count: data.data.data.total_count,
       _id: data.data.data._id,
+      color: data.data.data.color,
+      size: data.data.data.size,
+      density: data.data.data.density,
     };
     dispatch({ type: actionType.REMOVE_CART, payload: DecDataToCart });
   } catch (error) {
@@ -163,6 +189,14 @@ export const setEmptyCart = (item) => async (dispatch) => {
     });
 
     await Promise.all(deletePromises);
+    dispatch({ type: actionType.EMPTY_CART });
+  } catch (error) {
+    dispatch({ type: actionType.ERROR_EMPTY_CART, error: error });
+  }
+};
+
+export const removeCartDetailsFromRedux = () => async (dispatch) => {
+  try {
     dispatch({ type: actionType.EMPTY_CART });
   } catch (error) {
     dispatch({ type: actionType.ERROR_EMPTY_CART, error: error });

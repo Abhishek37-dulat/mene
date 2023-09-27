@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Card from "react-bootstrap/Card";
 
 import { useParams, NavLink, useNavigate } from "react-router-dom";
@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSingleProduct } from "../../redux/actions/productAction";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { DataContext } from "../../context/authContext";
 
 const HairTopper = () => {
+  const navigate = useNavigate();
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(7000);
   const [progress, setProgress] = useState(7000);
@@ -19,6 +21,8 @@ const HairTopper = () => {
   const { ProductData } = useSelector((state) => state.ProductReducer);
   const [cateData, setCateData] = useState([]);
   const [pCateData, setPCateData] = useState([]);
+  const { categoriesFinalData, setCategoriesFinalData } =
+    useContext(DataContext);
 
   const send = (e) => {
     // dispatch(DISPLAY(e));
@@ -59,6 +63,7 @@ const HairTopper = () => {
   const handleChangeCate = (data) => {
     localStorage.removeItem("ATC");
     localStorage.setItem("ATC", data);
+    setCategoriesFinalData(data);
     setCateName(data);
     navigate(`/collection/${data}`);
   };
@@ -69,8 +74,12 @@ const HairTopper = () => {
 
   useEffect(() => {
     let name = localStorage.getItem("ATC");
-    setCateName(name);
-  }, [dispatch, cateName, ProductData, setCateName]);
+    if (categoriesFinalData === undefined || categoriesFinalData === "") {
+      setCateName(name);
+    } else {
+      setCateName(categoriesFinalData);
+    }
+  }, [setCateName, categoriesFinalData]);
   useEffect(() => {
     const data = ProductData?.map((data) => {
       return data?.product_categories[0].name;
@@ -85,9 +94,9 @@ const HairTopper = () => {
     });
     setPCateData(Productbeforedata);
   }, [setCateData, ProductData]);
-  console.log(cateName);
 
-  const navigate = useNavigate();
+  console.log(cateName, categoriesFinalData);
+
   return (
     <>
       <div className="container-fluid">
@@ -188,7 +197,7 @@ const HairTopper = () => {
               })}
             </div>
           </div>
-          <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9">
+          <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 py-4">
             <section className="main-card--container">
               {ProductData?.map((product) => {
                 if (product.product_categories[0].name === cateName) {

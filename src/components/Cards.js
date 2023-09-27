@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,8 @@ import {
   getAllProduct,
   getSingleProduct,
 } from "../redux/actions/productAction";
+import { AddToSaveData, RemoveFromSaveData } from "../redux/actions/SaveAction";
+import { DataContext } from "../context/authContext";
 
 const Component = styled(Box)`
   margin-top: 10px;
@@ -102,6 +104,9 @@ const Cards = () => {
   const dispatch = useDispatch();
   const { ProductData } = useSelector((state) => state.ProductReducer);
   const history = useNavigate();
+  const { saveData } = useSelector((state) => state.saveReducers);
+  const { accountStatus, setUserDetails, account, userDetails } =
+    useContext(DataContext);
 
   const send = (e) => {
     dispatch(getSingleProduct(e));
@@ -114,6 +119,24 @@ const Cards = () => {
     // let comparedata = getdata.filter((e) => {
     //   return e.id == id;
     // });
+  };
+  const handleCallFav = (id) => {
+    console.log("i am called", id);
+    if (accountStatus) {
+      dispatch(AddToSaveData(id));
+    } else {
+      history("/login");
+    }
+  };
+
+  const handleCallFavDelete = (id) => {
+    console.log("i am called", id);
+
+    if (accountStatus) {
+      dispatch(RemoveFromSaveData(id));
+    } else {
+      history("/login");
+    }
   };
 
   useEffect(() => {
@@ -174,6 +197,10 @@ const Cards = () => {
                 // subCategories
                 if (data?.product_categories[0]?.subCategories?.length > 0) {
                 } else {
+                  const tempdata = saveData?.filter(
+                    (item) => item?.product_id === data._id
+                  );
+                  console.log(tempdata);
                   return (
                     <div className="hover-wishlist" key={index}>
                       <Saaa
@@ -181,10 +208,23 @@ const Cards = () => {
                         // className="cardOverlay"
                       >
                         <div className="hide">
-                          <AiFillHeart
-                            style={{ fontSize: "25px", color: "#ff6900" }}
-                          />
-                          <AiOutlineHeart style={{ fontSize: "25px" }} />
+                          {tempdata?.length > 0 ? (
+                            <AiFillHeart
+                              style={{
+                                fontSize: "25px",
+                                color: "#ff6900",
+                                cursor: "pointer",
+                              }}
+                              onClick={() =>
+                                handleCallFavDelete(tempdata[0]?._id)
+                              }
+                            />
+                          ) : (
+                            <AiOutlineHeart
+                              style={{ fontSize: "25px", cursor: "pointer" }}
+                              onClick={() => handleCallFav(data?._id)}
+                            />
+                          )}
                         </div>
 
                         <Image

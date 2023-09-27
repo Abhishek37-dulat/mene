@@ -15,7 +15,7 @@ const HairTransformation = ({ PostData }) => {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div className=" col-12 col-sx-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h3 className="py-3 text-center" style={{ fontWeight: 600 }}>
               <span style={{ color: "#ff6900" }}>Hair </span>Transformations
             </h3>
@@ -24,7 +24,7 @@ const HairTransformation = ({ PostData }) => {
         <div className="row">
           {htData?.map((data, index) => {
             return (
-              <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+              <div className="col-12 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
                 <img
                   src={`${process.env.REACT_APP_BACKEND_URL}/images/${
                     data?.post_image ? data?.post_image[0] : ""

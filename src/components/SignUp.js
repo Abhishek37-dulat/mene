@@ -131,7 +131,7 @@ const SignUp = () => {
             <div className="form-group mt-3">
               <label>Mobile No. </label>
               <input
-                type="email"
+                type="number"
                 name="mobile"
                 onChange={getdata}
                 className="form-control mt-1"

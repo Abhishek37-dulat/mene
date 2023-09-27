@@ -1,7 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { imageURL } from "../../Constants/Data";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const GenderCollection = () => {
+  const navigate = useNavigate();
+  const { ProductData } = useSelector((state) => state.ProductReducer);
+  const [mainData, setMainData] = useState([]);
+  const [cateData, setCateData] = useState([]);
+  const [collectionType, setCollectionType] = useState("");
+  const handleCollectionData = (data) => {
+    localStorage.removeItem("ATC");
+    localStorage.setItem("ATC", data);
+    navigate(`/collection/${data}`);
+  };
+
+  useEffect(() => {
+    let data = window.location.href;
+    if (data.includes("female")) {
+      setMainData(
+        ProductData.filter((data) => data?.product_gender === "Female")
+      );
+      const tempdata = mainData?.map((item) => {
+        return item?.product_categories[0]?.name;
+      });
+      const unique = [...new Set(tempdata)];
+      setCateData(unique);
+      setCollectionType("Female");
+    } else if (data.includes("male") && !data.includes("female")) {
+      setMainData(
+        ProductData.filter((data) => data?.product_gender === "Male")
+      );
+      const tempdata = mainData?.map((item) => {
+        return item?.product_categories[0]?.name;
+      });
+      const unique = [...new Set(tempdata)];
+      setCateData(unique);
+      setCollectionType("Male");
+    }
+  }, [setMainData, ProductData, cateData]);
+  console.log(mainData, cateData);
+
   return (
     <>
       <div className="container-fluid">
@@ -14,17 +53,31 @@ const GenderCollection = () => {
                 fontSize: "44px",
               }}
             >
-              Male Collection
+              {collectionType} Collection
             </h1>
           </div>
         </div>
         <div className="row py-4">
-          {imageURL.map((data, id) => {
+          {cateData?.map((data, id) => {
+            const product = mainData?.filter(
+              (item) => item?.product_categories[0]?.name === data
+            );
+
             return (
               <>
-                <div className="col-12 col-sm-12 col-lg-3 col-xl-3" key={id}>
+                <div
+                  className="col-12 col-sm-12 col-lg-3 col-xl-3"
+                  key={id}
+                  onClick={() => handleCollectionData(data)}
+                >
                   <img
-                    src={data?.Img}
+                    src={`${process.env.REACT_APP_BACKEND_URL}/images/${
+                      product[0]?.product_image
+                        ? product[0]?.product_image?.length > 0
+                          ? product[0]?.product_image[0]
+                          : ""
+                        : ""
+                    }`}
                     alt="md"
                     style={{
                       width: "90%",
@@ -44,7 +97,7 @@ const GenderCollection = () => {
                       color: "#ff6900",
                     }}
                   >
-                    {data.Text}
+                    {data}
                   </p>
                 </div>
               </>

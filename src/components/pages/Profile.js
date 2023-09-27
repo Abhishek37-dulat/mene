@@ -47,6 +47,7 @@ const Profile = () => {
   };
   const submitFinalData = () => {
     setEditCondition(false);
+    console.log(userDetailsEdit);
     if (selectedFile) {
       const data = { ...userDetailsEdit, image: selectedFile };
       dispatch(AddProfileData(data));
@@ -59,6 +60,7 @@ const Profile = () => {
     const temp_data = localStorage.getItem("token");
     const redata = JSON.parse(atob(temp_data?.split(".")[1]))?.userExits;
     // console.log("redata", redata, ProfileData[0]);
+    console.log("redata::::::::>>>>", redata, ProfileData);
     const data = {
       first_name: ProfileData
         ? ProfileData?.first_name
@@ -70,14 +72,14 @@ const Profile = () => {
           ? ProfileData?.last_name
           : redata?.last_name
         : redata?.last_name,
-      email: redata.email,
-      mobile: redata.phone,
+      email: redata?.email,
+      mobile: redata?.phone,
     };
     setUserDetails(data);
   }, [dispatch, setEditCondition, setUserDetails]);
   useEffect(() => {
     dispatch(GetProfileData());
-  }, []);
+  }, [dispatch]);
   console.log("ProfileData: ", userDetails, ProfileData);
   return (
     <>
@@ -94,8 +96,8 @@ const Profile = () => {
                     {ProfileData
                       ? ProfileData?.first_name
                         ? ProfileData?.first_name
-                        : userDetails?.frist_name
-                      : userDetails?.frist_name}{" "}
+                        : userDetails?.first_name
+                      : userDetails?.first_name}{" "}
                     {ProfileData
                       ? ProfileData?.last_name
                         ? ProfileData?.last_name

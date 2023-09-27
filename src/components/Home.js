@@ -18,8 +18,10 @@ import ServicesTags from "./ServicesTags";
 import men from "../images/hair_loss_in_men-removebg-preview.png";
 import women from "../images/iStock-1221628227-removebg-preview.png";
 import { AiOutlineClose } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { PostData } = useSelector((state) => state.PostReducer);
   const [isPopupOpen, setPopupOpen] = useState(true);
@@ -47,7 +49,7 @@ const Home = () => {
     <>
       <div className="container-fluid">
         {isPopupOpen && (
-          <div className="popup">
+          <div className="popup" style={{ zIndex: "2000" }}>
             <div className="popup-content">
               <div className="d-flex justify-content-end">
                 <AiOutlineClose className="closebutton" onClick={closePopup} />
@@ -68,17 +70,20 @@ const Home = () => {
 
               <div className="row py-4">
                 <div
-                  className="col-12 col-sm-12 col-lg-6 col-xl-6 main-male"
-                  style={{
-                    width: "50%",
-                    height: "400px",
-                  }}
+                  className="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 main-male"
+                  // style={{
+                  //   width: "50%",
+                  //   height: "400px",
+                  // }}
                 >
                   <div
                     className="malediv"
                     style={{
                       width: "100%",
                       height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
                     <img
@@ -93,16 +98,21 @@ const Home = () => {
                       style={{ width: "100%", height: "100%" }}
                     />
 
-                    <button className="malebtn">Male</button>
+                    <button
+                      className="malebtn"
+                      onClick={() => navigate("/gendercollection/male")}
+                    >
+                      Male
+                    </button>
                   </div>
                 </div>
 
                 <div
-                  className="col-12 col-sm-12 col-lg-6 col-xl-6 main-female"
-                  style={{
-                    width: "50%",
-                    height: "400px",
-                  }}
+                  className="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 main-female"
+                  // style={{
+                  //   width: "50%",
+                  //   height: "400px",
+                  // }}
                 >
                   <div
                     className="femalediv"
@@ -122,7 +132,12 @@ const Home = () => {
                       alt="women"
                       style={{ width: "100%", height: "100%" }}
                     />
-                    <button className="femalebtn">Female</button>
+                    <button
+                      className="femalebtn"
+                      onClick={() => navigate("/gendercollection/female")}
+                    >
+                      Female
+                    </button>
                   </div>
                 </div>
               </div>

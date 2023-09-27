@@ -13,12 +13,16 @@ export const placeNewOrder = (orderDetails) => async (dispatch) => {
       Authorization: `Bearer ${token}`,
     };
     console.log(orderDetails);
-    const data = await axios.post(`${url}/checkout`, orderDetails, {
-      headers,
+    // const data = await axios.post(`${url}/checkout`, orderDetails, {
+    //   headers,
+    // });
+    // console.log(data);
+    const phonepayData = await axios.post(`${url}/create-checkout-session`, {
+      userId: orderDetails?.userID,
+      orderDetails,
     });
-    console.log(data);
-
-    dispatch({ type: actionType.PLACE_NEW_ORDER, payload: data.data.data });
+    window.location.href = phonepayData.data.url;
+    // dispatch({ type: actionType.PLACE_NEW_ORDER, payload: data.data.data });
   } catch (error) {
     dispatch({ type: actionType.ERROR_PLACE_NEW_ORDER, error: error });
   }
@@ -33,7 +37,7 @@ export const getAllOrders = () => async (dispatch) => {
     const data = await axios.get(`${url}/checkout`, {
       headers,
     });
-    console.log("data::::::", data);
+    console.log("ALL ORDERS data::::::", data);
     dispatch({ type: actionType.GET_NEW_ORDER, payload: data.data.data });
   } catch (error) {
     dispatch({ type: actionType.ERROR_GET_NEW_ORDER, error: error });

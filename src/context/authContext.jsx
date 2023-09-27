@@ -5,8 +5,9 @@ export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
   const [account, setAccount] = useState([]);
-  const [accountStatus, setAccountStatus] = useState(true);
+  const [accountStatus, setAccountStatus] = useState(false);
   const [userDetails, setUserDetails] = useState();
+  const [categoriesFinalData, setCategoriesFinalData] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -28,7 +29,6 @@ export const DataProvider = ({ children }) => {
         const token = localStorage.getItem("token");
         if (token) {
           const trydata = JSON.parse(atob(token.split(".")[1]));
-
           const refreshme = localStorage.getItem("refreshtoken");
           const redata = JSON.parse(atob(refreshme.split(".")[1]));
           const currentTimestamp = Date.now() / 1000;
@@ -36,11 +36,13 @@ export const DataProvider = ({ children }) => {
             const temp = { refreshtoken: refreshme };
             refreshCall(temp);
             setAccountStatus(true);
+            setUserDetails(trydata.userExits);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("refreshtoken");
             setAccountStatus(false);
             setAccount([]);
+            setUserDetails();
           }
         }
       }
@@ -58,6 +60,8 @@ export const DataProvider = ({ children }) => {
         setAccountStatus,
         userDetails,
         setUserDetails,
+        categoriesFinalData,
+        setCategoriesFinalData,
       }}
     >
       {children}

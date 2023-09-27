@@ -33,27 +33,29 @@ const AboutUs = () => {
             <p style={{ marginTop: "50px" }}>ＯＵＲ ＳＴＯＲＹ</p>
           </div>
         </div>
-        <div
-          className="row"
-          style={{
-            padding: "0px 10%",
-            width: "100%",
-            // border: "1px solid black",
-          }}
-        >
-          <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mx-2  d-flex align-items-center justify-content-center">
-            <h3
-              style={{
-                textAlign: "center",
-                fontWeight: "600",
-                fontSize: "32px",
-              }}
-              className="about-heading"
-            >
-              Maneology is a product of love. A love for beauty, quality and
-              strength. A love for hair weaves and a love for all those who wear
-              them.
-            </h3>
+        <div className="container">
+          <div
+            className="row"
+            style={{
+              padding: "0px 10%",
+              width: "100%",
+              // border: "1px solid black",
+            }}
+          >
+            <div className="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12  d-flex align-items-center justify-content-center">
+              <h3
+                style={{
+                  textAlign: "center",
+                  fontWeight: "600",
+                  fontSize: "32px",
+                }}
+                className="about-heading"
+              >
+                Maneology is a product of love. A love for beauty, quality and
+                strength. A love for hair weaves and a love for all those who
+                wear them.
+              </h3>
+            </div>
           </div>
         </div>
         <div className="row">

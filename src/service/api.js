@@ -30,6 +30,7 @@ export const authenticatesLogin = async (data) => {
 export const refreshCall = async (data) => {
   try {
     const logindata = await axios.post(`${URL}/user/refresh-token`, data);
+    console.log(logindata);
 
     localStorage.setItem("token", logindata.data.token);
     localStorage.setItem("refreshtoken", logindata.data.refreshtoken);

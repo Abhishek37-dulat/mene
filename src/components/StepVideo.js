@@ -1,8 +1,8 @@
 import React from "react";
 // import PropTypes from "prop-types";
-import { StepVideoData } from "../Constants/StepVideoData";
 
-const StepVideo = () => {
+const StepVideo = ({ stepdata }) => {
+  console.log(stepdata);
   return (
     <>
       <div className="container">
@@ -20,26 +20,31 @@ const StepVideo = () => {
           </div>
         </div>
         <div className="row">
-          {StepVideoData.map((data, id) => {
+          {stepdata?.map((data, index) => {
             return (
               <>
-                <div className="col-12 col-sm-12 col-lg-4 col-xl-4 " key={id}>
+                <div
+                  className="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-4 col-xl-4 "
+                  key={data._id}
+                >
                   <p style={{ fontSize: "24px", fontWeight: "600" }}>
-                    {data.step}
+                    Step {index + 1}:
                   </p>
-                  <p>{data.text}</p>
+                  <p>{data?.title}</p>
                   <div className="video-responsive">
                     <iframe
-                      width="380"
-                      height="280"
-                      src={`https://www.youtube.com/embed/${data.embedId}`}
+                      width="320"
+                      height="240"
+                      src={`https://www.youtube.com/embed/${data?.link}`}
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                       title="Embedded youtube"
                     />
+
+                    {/* <iframe width="320" height="240" src={`${data?.link[1]}`} /> */}
                   </div>
-                  <p>{data.desc}</p>
+                  <p>{data?.description}</p>
                 </div>
               </>
             );

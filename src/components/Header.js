@@ -21,11 +21,15 @@ import {
   IncreaseItem,
   REMOVE,
   GetCartData,
+  removeCartDetailsFromRedux,
 } from "../redux/actions/cartAction";
 import { getAllPost } from "../redux/actions/PostAction";
 import ThemeChanger from "./ThemeChanger";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { loginWithRedirect } = useAuth0();
   const history = useNavigate();
   const [price, setPrice] = useState(0);
   console.log(price);
@@ -33,11 +37,16 @@ const Header = () => {
   const { ProductData } = useSelector((state) => state.ProductReducer);
   const { PostData } = useSelector((state) => state.PostReducer);
   const [footerData, setFooterData] = useState();
+  const [productCate, setProductCate] = useState([]);
 
   console.log("carts:::::::::::::------->>>>>", carts);
 
-  const { userDetails, setUserDetails, setAccountStatus } =
-    useContext(DataContext);
+  const {
+    userDetails,
+    setUserDetails,
+    setAccountStatus,
+    setCategoriesFinalData,
+  } = useContext(DataContext);
 
   const dispatch = useDispatch();
 
@@ -65,7 +74,16 @@ const Header = () => {
     e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("refreshtoken");
+    dispatch(removeCartDetailsFromRedux());
     setUserDetails();
+    setAccountStatus(false);
+  };
+
+  const handleShopDrop = (data) => {
+    localStorage.removeItem("ATC");
+    localStorage.setItem("ATC", data);
+    setCategoriesFinalData(data);
+    navigate(`/collection/${data}`);
   };
 
   const handleCheckOut = (e) => {
@@ -90,6 +108,13 @@ const Header = () => {
     });
     setPrice(p.toFixed(2));
   }, [dispatch, setPrice, carts]);
+  useEffect(() => {
+    const tempdata = ProductData?.map((item) => {
+      return item?.product_categories[0]?.name;
+    });
+    const unique = [...new Set(tempdata)];
+    setProductCate(unique);
+  }, [setProductCate, dispatch, ProductData]);
 
   useEffect(() => {
     dispatch(getAllPost());
@@ -98,7 +123,7 @@ const Header = () => {
   useEffect(() => {
     setFooterData(PostData.filter((data) => data.categorie === "Logo"));
   }, [setFooterData, PostData]);
-  console.log("footerData::::::::::::::::::::::::::::::::::::", footerData);
+  console.log("footerData::::::::::::::::::::::::::::::::::::", productCate);
   return (
     <>
       <div className="container-fluid">
@@ -114,7 +139,6 @@ const Header = () => {
                           data?.post_image ? data?.post_image[0] : ""
                         }`}
                         alt=""
-                        style={{ width: "65px", height: "65px" }}
                       />
                     </Link>
                   );
@@ -134,106 +158,23 @@ const Header = () => {
                   style={{ color: "#ff6900", fontWeight: 600 }}
                   className="list"
                 >
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/hair-toppers"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/hair-toppers"
-                      style={{
-                        textDecoration: "none",
-                        color: "#ff6900",
-                      }}
-                    >
-                      Hair Topper
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/all-things-hair"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/all-things-hair"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      {" "}
-                      All Things Hair{" "}
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/strandouts"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/strandouts"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Strandouts
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/clip-in-bangs"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/clip-in-bangs"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Clip In Bangs
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/wigs"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/wigs"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Wigs
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/hair-extension"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/hair-extension"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Hair Extension
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/accessories"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/accessories"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Accessories
-                    </Link>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    as={Link}
-                    to="/collection/halo-hair"
-                    style={{ background: "#fff" }}
-                  >
-                    <Link
-                      to="/collection/halo-hair"
-                      style={{ textDecoration: "none", color: "#ff6900" }}
-                    >
-                      Halo Hair
-                    </Link>
-                  </NavDropdown.Item>
+                  {productCate?.map((data) => {
+                    return (
+                      <NavDropdown.Item
+                        style={{ background: "#fff" }}
+                        onClick={() => handleShopDrop(data)}
+                      >
+                        <div
+                          style={{
+                            textDecoration: "none",
+                            color: "#ff6900",
+                          }}
+                        >
+                          {data}
+                        </div>
+                      </NavDropdown.Item>
+                    );
+                  })}
                 </NavDropdown>
                 <Link
                   to="/help-me"
@@ -354,11 +295,15 @@ const Header = () => {
               }}
             >
               <div
-                className="card_details d-flex justify-content align-center"
+                className="card_details d-flex justify-content-flex-end align-center"
                 style={{
-                  width: "24rem",
                   padding: 10,
                   position: "relative",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  width: "100%",
                 }}
               >
                 <AiOutlineClose
@@ -376,13 +321,12 @@ const Header = () => {
               {carts?.length ? (
                 <div
                   className="card_details"
-                  style={{ width: "24rem", padding: 10 }}
+                  style={{ width: "20rem", padding: 10 }}
                 >
                   <Table>
                     <thead>
                       <tr>
-                        <th>Photo</th>
-                        <th>Products</th>
+                        <th>cart products</th>
                       </tr>
                     </thead>
                     <tbody>
