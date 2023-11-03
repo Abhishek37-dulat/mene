@@ -8,13 +8,22 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPost } from "../../redux/actions/PostAction";
 import { useState } from "react";
+import {
+  getAllContacts,
+  getSingleContacts,
+} from "../../redux/actions/ContactAction";
 
 const ContactUs = () => {
   const dispatch = useDispatch();
   const { PostData } = useSelector((state) => state.PostReducer);
+  const { SingleContactData } = useSelector((state) => state.ContactReducer);
   const [contactData, setContactData] = useState();
   useEffect(() => {
-    dispatch(getAllPost());
+    let tempdata = JSON.parse(localStorage.getItem("ewfsdfjwhk3j2nkj4h23ui23"));
+
+    dispatch(getSingleContacts(tempdata._id));
+    localStorage.removeItem("ewfsdfjwhk3j2nkj4h23ui23");
+    localStorage.setItem("ewfsdfjwhk3j2nkj4h23ui23", JSON.stringify(tempdata));
   }, [dispatch]);
 
   useEffect(() => {
@@ -27,7 +36,10 @@ const ContactUs = () => {
       )
     );
   }, [setContactData, PostData]);
-  console.log(contactData);
+  // useEffect(() => {
+  //   dispatch(getAllContacts());
+  // }, []);
+  console.log("SingleContactData", SingleContactData);
 
   return (
     <>
@@ -73,62 +85,90 @@ const ContactUs = () => {
         </div>
 
         <div className="row py-4">
-          {contactData?.map((data, index) => {
-            return (
-              <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                <div className="contactCard">
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                  >
-                    {data.categorie === "Mobile" ? (
-                      <BsFillTelephoneFill
-                        style={{
-                          color: "#ff6900",
-                          fontSize: "36px",
-                          marginTop: "20px",
-                        }}
-                      />
-                    ) : null}
-                    {data.categorie === "Email" ? (
-                      <BsEnvelopeOpenFill
-                        style={{
-                          color: "#ff6900",
-                          fontSize: "36px",
-                          marginTop: "20px",
-                        }}
-                      />
-                    ) : null}
-                    {data.categorie === "Address" ? (
-                      <BsGeoAltFill
-                        style={{
-                          color: "#ff6900",
-                          fontSize: "36px",
-                          marginTop: "20px",
-                        }}
-                      />
-                    ) : null}{" "}
-                    <h4 style={{ textAlign: "center" }} className="py-2">
-                      <b>
-                        {data.categorie === "Mobile" ? "Mobile No." : ""}
-                        {data.categorie === "Email" ? "Email" : ""}
-                        {data.categorie === "Address" ? "Address" : ""}{" "}
-                      </b>
-                    </h4>
-                    <p style={{ textAlign: "center", padding: "0px 10px" }}>
-                      {data.title}
-                    </p>
-                  </div>
-                </div>
+          <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <div className="contactCard">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <BsFillTelephoneFill
+                  style={{
+                    color: "#ff6900",
+                    fontSize: "36px",
+                    marginTop: "20px",
+                  }}
+                />
+                <h4 style={{ textAlign: "center" }} className="py-2">
+                  <b>Mobile No.</b>
+                </h4>
+                <p style={{ textAlign: "center", padding: "0px 10px" }}>
+                  {SingleContactData?.phone}
+                </p>
               </div>
-            );
-          })}
+            </div>
+          </div>
+          <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <div className="contactCard">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <BsFillTelephoneFill
+                  style={{
+                    color: "#ff6900",
+                    fontSize: "36px",
+                    marginTop: "20px",
+                  }}
+                />
+                <h4 style={{ textAlign: "center" }} className="py-2">
+                  <b>Email</b>
+                </h4>
+                <p style={{ textAlign: "center", padding: "0px 10px" }}>
+                  {SingleContactData?.email}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="col-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+            <div className="contactCard">
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
+                <BsGeoAltFill
+                  style={{
+                    color: "#ff6900",
+                    fontSize: "36px",
+                    marginTop: "20px",
+                  }}
+                />
+                <h4 style={{ textAlign: "center" }} className="py-2">
+                  <b>Address</b>
+                </h4>
+                <p style={{ textAlign: "center", padding: "0px 10px" }}>
+                  {SingleContactData?.address}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="container-fluid py-4">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate, useParams, NavLink } from "react-router-dom";
@@ -26,7 +26,24 @@ import { getSingleProduct } from "../redux/actions/productAction";
 import StepVideo from "./StepVideo";
 import { AddToSaveData, RemoveFromSaveData } from "../redux/actions/SaveAction";
 import { getAllComments } from "../redux/actions/CommentAction";
+import { Helmet } from "react-helmet";
+import { getSingleSeo } from "../redux/actions/seoAction";
+import { DataContext } from "../context/authContext";
+import { Rating } from "@mui/material";
 // import ZoomCom from "./ZoomCom";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const customSuccessToastStyleSuccess = {
+  background: "#4CAF50",
+  color: "#fff",
+};
+
+const customSuccessToastStyleError = {
+  background: "#E75758",
+  color: "#fff",
+};
 
 const CardsDetails = () => {
   const history = useNavigate();
@@ -44,6 +61,9 @@ const CardsDetails = () => {
   const [selectedColorf, setSelectedColorf] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedDensity, setSelectedDensity] = useState("");
+  const { SeoSingle } = useSelector((state) => state.seoReducers);
+  const { accountStatus } = useContext(DataContext);
+  const [tempSave, setTempSave] = useState([]);
 
   const dispatch = useDispatch();
   const send = (data) => {
@@ -56,8 +76,26 @@ const CardsDetails = () => {
         density: selectedDensity,
       };
       console.log(finalData, data);
-      dispatch(ADD(finalData));
-      dispatch(GetCartData());
+      if (
+        selectedColorf === "" ||
+        selectedSize === "" ||
+        selectedDensity === "" ||
+        selectedDensity === "none"
+      ) {
+        toast.error("Please Select color, Size and Desity!", {
+          toastId: "success2",
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: customSuccessToastStyleError,
+        });
+      } else {
+        dispatch(ADD(finalData));
+        dispatch(GetCartData());
+      }
     } else {
       history("/login");
     }
@@ -80,11 +118,22 @@ const CardsDetails = () => {
   };
 
   const handleCallFav = (id) => {
-    dispatch(AddToSaveData(id));
+    console.log("i am called", id);
+    if (accountStatus) {
+      dispatch(AddToSaveData(id));
+    } else {
+      history("/login");
+    }
   };
+
   const handleCallFavDelete = (id) => {
-    console.log("i am called");
-    dispatch(RemoveFromSaveData(id));
+    console.log("i am called delete", id);
+
+    if (accountStatus) {
+      dispatch(RemoveFromSaveData(id));
+    } else {
+      history("/login");
+    }
   };
   const handleChangeDensity = (e) => {
     setSelectedDensity(e.target.value);
@@ -93,6 +142,9 @@ const CardsDetails = () => {
     console.log(e.target.value);
     setSelectedSize(e.target.value);
   };
+
+  const schemaJsonString = JSON.stringify(SeoSingle?.seo_schema);
+  const ogJsonString = JSON.stringify(SeoSingle?.seo_open_graph);
 
   useEffect(() => {
     compare();
@@ -116,6 +168,15 @@ const CardsDetails = () => {
     const tempData = localStorage.getItem("singleproduct");
     const tempDataFormat = JSON.parse(tempData);
     dispatch(getSingleProduct(tempDataFormat));
+    const tempdata = saveData?.filter(
+      (item) => item?.product_id === tempDataFormat?._id
+    );
+    setTempSave(tempdata);
+  }, [dispatch, saveData]);
+  useEffect(() => {
+    const tempData = localStorage.getItem("singleproduct");
+    const tempDataFormat = JSON.parse(tempData);
+    dispatch(getSingleSeo(tempDataFormat?._id));
   }, [dispatch]);
   useEffect(() => {
     dispatch(GetCartData());
@@ -125,16 +186,50 @@ const CardsDetails = () => {
     dispatch(getAllComments(tempDataFormat?._id));
   }, [dispatch, singleProduct]);
   console.log(
-    "color: ",
-    selectedColorf,
-    "Density:",
-    selectedDensity,
-    "Size: ",
-    selectedSize,
-    singleProduct
+    SeoSingle?.seo_schema,
+    SeoSingle?.seo_open_graph,
+    SeoSingle,
+    ogJsonString
   );
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{SeoSingle?.seo_title}</title>
+        <meta name="description" content={SeoSingle?.description} />
+        {SeoSingle?.keywords?.map((data) => {
+          return <meta name="keywords" content={data} />;
+        })}
+
+        <link rel="canonical" href={window.location.href} />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={SeoSingle?.seo_title} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:site_name" content="Meneology" />
+        <meta
+          property="og:image"
+          content={singleProduct?.product_image[0].url}
+        />
+        <meta
+          property="og:image:secure_url"
+          content={singleProduct?.product_image[0].url}
+        />
+
+        <meta property="og:image:alt" content={SeoSingle?.seo_title} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SeoSingle?.seo_title} />
+        <meta name="twitter:creator" content="@Meneology" />
+        <meta
+          name="twitter:image"
+          content={`${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[0]}`}
+        />
+        <meta name="twitter:label1" content="Time to buy" />
+        <meta name="twitter:data1" content="Less than a minute" />
+
+        <script type="application/ld+json">{SeoSingle?.seo_schema}</script>
+      </Helmet>
       <div className="container-fluid mt-2">
         <section className="container mt-3">
           <div className="iteamsdetails">
@@ -150,7 +245,7 @@ const CardsDetails = () => {
                       onClick={() => setChangeImage(index)}
                     >
                       <img
-                        src={`${process.env.REACT_APP_BACKEND_URL}/images/${data}`}
+                        src={data.url}
                         alt="images"
                         className="smallImage1"
                         onClick={() => handleChangeImage(singleProduct?._id)}
@@ -166,10 +261,10 @@ const CardsDetails = () => {
                       smallImage: {
                         alt: "ourprod1",
                         isFluidWidth: true,
-                        src: `${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`,
+                        src: `${singleProduct?.product_image[changeImage]?.url}`,
                       },
                       largeImage: {
-                        src: `${process.env.REACT_APP_BACKEND_URL}/images/${singleProduct?.product_image[changeImage]}`,
+                        src: `${singleProduct?.product_image[changeImage]?.url}`,
                         width: 1200,
                         height: 1800,
                       },
@@ -196,40 +291,24 @@ const CardsDetails = () => {
                     </p>
 
                     <div className="details_rating">
-                      <p
-                        style={{
-                          color: "#FFA800",
-                          padding: "2px 5px",
-                          borderRadius: "5px",
-                          fontSize: "22px",
-                          top: "45px",
-                          wordSpacing: "-5px",
-                        }}
-                        className="details_rating"
-                      >
-                        Reating
-                        <span
-                          style={{
-                            color: "#000",
-                            fontSize: "18px",
-                            fontWeight: "300",
-                            marginLeft: "10px",
-                          }}
-                        >
-                          <span>3</span>
-                          <span style={{ marginLeft: "5px" }}>Reviews</span>
-                        </span>
-                      </p>
+                      <Rating name="read-only" value={2} readOnly />
                     </div>
                     <div className="wishlist-icon">
-                      <AiFillHeart
-                        style={{ fontSize: "25px", color: "#ff6900" }}
-                        onClick={() => handleCallFav(singleProduct?._id)}
-                      />
-                      <AiOutlineHeart
-                        style={{ fontSize: "25px" }}
-                        onClick={() => handleCallFavDelete(singleProduct?._id)}
-                      />
+                      {tempSave?.length > 0 ? (
+                        <AiFillHeart
+                          style={{
+                            fontSize: "25px",
+                            color: "#ff6900",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleCallFavDelete(tempSave[0]?._id)}
+                        />
+                      ) : (
+                        <AiOutlineHeart
+                          style={{ fontSize: "25px", cursor: "pointer" }}
+                          onClick={() => handleCallFav(singleProduct?._id)}
+                        />
+                      )}
                     </div>
                     <p
                       style={{
@@ -254,6 +333,7 @@ const CardsDetails = () => {
                           value={selectedDensity}
                           onChange={handleChangeDensity}
                         >
+                          <option value="none">None</option>
                           <option value="low">Low</option>
                           <option value="medium">Medium</option>
                           <option value="high">High</option>
@@ -359,6 +439,7 @@ const CardsDetails = () => {
         <CustomerReview productID={singleProduct?._id} />
         <CustomerComments productID={singleProduct?._id} />
       </div>
+      <ToastContainer />
     </>
   );
 };

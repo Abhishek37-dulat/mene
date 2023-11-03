@@ -31,10 +31,7 @@ const ShopByBrand = () => {
                   onClick={() => navigate(`/cart/${data?._id}`)}
                 >
                   <Card style={{ width: "18rem" }} className=" brandImage">
-                    <Card.Img
-                      variant="top"
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${data?.product_image[0]}`}
-                    />
+                    <Card.Img variant="top" src={data?.product_image[0]?.url} />
                     <Card.Body>
                       <Card.Title>{data?.product_title}</Card.Title>
                       <Card.Text

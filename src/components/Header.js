@@ -25,11 +25,14 @@ import {
 } from "../redux/actions/cartAction";
 import { getAllPost } from "../redux/actions/PostAction";
 import ThemeChanger from "./ThemeChanger";
-import { useAuth0 } from "@auth0/auth0-react";
+import Topnavbar from "./pages/Topnavbar";
+import {
+  getAllContacts,
+  getSingleContacts,
+} from "../redux/actions/ContactAction";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { loginWithRedirect } = useAuth0();
   const history = useNavigate();
   const [price, setPrice] = useState(0);
   console.log(price);
@@ -38,7 +41,8 @@ const Header = () => {
   const { PostData } = useSelector((state) => state.PostReducer);
   const [footerData, setFooterData] = useState();
   const [productCate, setProductCate] = useState([]);
-
+  const uniqueCarts = [...new Set(carts)];
+  const { ContactData } = useSelector((state) => state.ContactReducer);
   console.log("carts:::::::::::::------->>>>>", carts);
 
   const {
@@ -85,6 +89,13 @@ const Header = () => {
     setCategoriesFinalData(data);
     navigate(`/collection/${data}`);
   };
+  const handleContactDrop = (data) => {
+    localStorage.removeItem("ewfsdfjwhk3j2nkj4h23ui23");
+    localStorage.setItem("ewfsdfjwhk3j2nkj4h23ui23", JSON.stringify(data));
+
+    navigate(`/contact/${data.location}`);
+    dispatch(getSingleContacts(data._id));
+  };
 
   const handleCheckOut = (e) => {
     e.preventDefault();
@@ -107,7 +118,7 @@ const Header = () => {
         p;
     });
     setPrice(p.toFixed(2));
-  }, [dispatch, setPrice, carts]);
+  }, [dispatch, setPrice, carts, ProductData]);
   useEffect(() => {
     const tempdata = ProductData?.map((item) => {
       return item?.product_categories[0]?.name;
@@ -123,9 +134,10 @@ const Header = () => {
   useEffect(() => {
     setFooterData(PostData.filter((data) => data.categorie === "Logo"));
   }, [setFooterData, PostData]);
-  console.log("footerData::::::::::::::::::::::::::::::::::::", productCate);
+  console.log("footerData::::::::::::::::::::::::::::::::::::", ContactData);
   return (
     <>
+      <Topnavbar ContactData={ContactData} />
       <div className="container-fluid">
         <Navbar expand="lg" className="bg-body-tertiary">
           <Container>
@@ -198,17 +210,30 @@ const Header = () => {
                 >
                   About Us
                 </Link>
-                <Link
-                  to="/contact-us"
-                  style={{
-                    color: "#000",
-                    fontWeight: 600,
-                    textDecoration: "none",
-                    padding: "10px",
-                  }}
+                <NavDropdown
+                  title="Contact Us"
+                  id="basic-nav-dropdown"
+                  style={{ color: "#ff6900", fontWeight: 600 }}
+                  className="list"
                 >
-                  Contact Us
-                </Link>
+                  {ContactData?.map((data) => {
+                    return (
+                      <NavDropdown.Item
+                        style={{ background: "#fff" }}
+                        onClick={() => handleContactDrop(data)}
+                      >
+                        <div
+                          style={{
+                            textDecoration: "none",
+                            color: "#ff6900",
+                          }}
+                        >
+                          {data.location}
+                        </div>
+                      </NavDropdown.Item>
+                    );
+                  })}
+                </NavDropdown>
 
                 {userDetails ? (
                   <NavDropdown
@@ -330,7 +355,7 @@ const Header = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {carts?.map((d) => {
+                      {uniqueCarts?.map((d) => {
                         const product = ProductData?.find(
                           (e) => d?.product_id === e?._id
                         );

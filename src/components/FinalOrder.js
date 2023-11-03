@@ -9,6 +9,10 @@ import { getApiKey } from "../redux/actions/payment";
 import { Place } from "@mui/icons-material";
 import { placeNewOrder } from "../redux/actions/CheckOutAction";
 import { useNavigate } from "react-router-dom";
+import {
+  REMOVE,
+  removeCartDetailsFromRedux,
+} from "../redux/actions/cartAction";
 
 const FinalOrder = (props) => {
   const dispatch = useDispatch();
@@ -48,6 +52,9 @@ const FinalOrder = (props) => {
       finalAmt: props?.price,
     };
     dispatch(placeNewOrder(sendData));
+    props?.carts?.map((data) => {
+      return dispatch(REMOVE(data));
+    });
     // dispatch(getApiKey(sendData, props.carts));
     // navigate("/thankyou");
   };

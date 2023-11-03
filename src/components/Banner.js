@@ -135,7 +135,7 @@ const Banner = () => {
       {BannerData?.map((data, index) => (
         <MainBannerBox>
           <Image
-            src={`${process.env.REACT_APP_BACKEND_URL}/images/${data?.banner_image[0]}`}
+            src={data?.banner_image[0]?.url}
             key={data?._id}
             alt={`banner-${data?._id}`}
           />

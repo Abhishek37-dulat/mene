@@ -87,13 +87,7 @@ const Home = () => {
                     }}
                   >
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        popupDataMale.length > 0
-                          ? popupDataMale[0]?.post_image
-                            ? popupDataMale[0]?.post_image[0]
-                            : ""
-                          : ""
-                      }`}
+                      src={popupDataMale[0]?.post_image[0]?.url}
                       alt="men"
                       style={{ width: "100%", height: "100%" }}
                     />
@@ -122,13 +116,7 @@ const Home = () => {
                     }}
                   >
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        popupDataFemale.length > 0
-                          ? popupDataFemale[0]?.post_image
-                            ? popupDataFemale[0]?.post_image[0]
-                            : ""
-                          : ""
-                      }`}
+                      src={popupDataFemale[0]?.post_image[0]?.url}
                       alt="women"
                       style={{ width: "100%", height: "100%" }}
                     />

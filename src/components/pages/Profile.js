@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
@@ -11,15 +11,24 @@ import {
   AddProfileData,
   GetProfileData,
 } from "../../redux/actions/profileAction";
+import axios from "axios";
+import { DataContext } from "../../context/authContext";
 
 const Profile = () => {
+  const {
+    accountStatus,
+    setUserDetails,
+    setAccountStatus,
+    account,
+    userDetails,
+  } = useContext(DataContext);
   const dispatch = useDispatch();
-  const [userDetails, setUserDetails] = useState();
   const [userDetailsEdit, setUserDetailsEdit] = useState({
     first_name: "",
     last_name: "",
-    dob: "",
+    date_of_birth: "",
     gender: "",
+    photo: "",
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [editCondition, setEditCondition] = useState(false);
@@ -30,10 +39,12 @@ const Profile = () => {
   function handleEdit() {
     setEditCondition(true);
     setUserDetailsEdit({
-      first_name: ProfileData?.first_name ? ProfileData?.first_name : "",
-      last_name: ProfileData?.last_name ? ProfileData?.last_name : "",
-      dob: ProfileData?.dob ? ProfileData?.dob : "",
-      gender: ProfileData?.gender ? ProfileData?.gender : "",
+      first_name: userDetails?.first_name ? userDetails?.first_name : "",
+      last_name: userDetails?.last_name ? userDetails?.last_name : "",
+      date_of_birth: userDetails?.date_of_birth
+        ? userDetails?.date_of_birth
+        : "",
+      gender: userDetails?.gender ? userDetails?.gender : "",
     });
   }
 
@@ -42,45 +53,63 @@ const Profile = () => {
   };
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file);
-    setImageUrl(URL.createObjectURL(file));
+    if (file) {
+      setSelectedFile(file);
+      imageRead(file);
+    }
   };
-  const submitFinalData = () => {
+  const imageRead = (img) => {
+    console.log(img);
+    const reader = new FileReader();
+    if (img) {
+      reader.readAsDataURL(img);
+      reader.onloadend = () => {
+        setUserDetailsEdit({ photo: reader.result });
+      };
+    } else {
+      console.log("not found");
+    }
+  };
+  const submitFinalData = async () => {
     setEditCondition(false);
     console.log(userDetailsEdit);
-    if (selectedFile) {
-      const data = { ...userDetailsEdit, image: selectedFile };
-      dispatch(AddProfileData(data));
-    } else {
-      const data = { ...userDetailsEdit };
-      dispatch(AddProfileData(data));
+    const fulldata = { ...userDetailsEdit };
+    try {
+      const token = localStorage.getItem("token");
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      console.log(fulldata);
+      const data = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/user/details/update`,
+        fulldata,
+        {
+          headers,
+        }
+      );
+      localStorage.setItem("userdata", JSON.stringify(data.data.data));
+      setUserDetails(data.data.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    // dispatch(AddProfileData(fulldata));
+  };
+  const dataUpdateFun = async (data) => {
+    if (data) {
+      const regular = JSON.parse(data);
+      console.log(regular);
+      setUserDetails(regular);
     }
   };
   useEffect(() => {
-    const temp_data = localStorage.getItem("token");
-    const redata = JSON.parse(atob(temp_data?.split(".")[1]))?.userExits;
-    // console.log("redata", redata, ProfileData[0]);
-    console.log("redata::::::::>>>>", redata, ProfileData);
-    const data = {
-      first_name: ProfileData
-        ? ProfileData?.first_name
-          ? ProfileData?.first_name
-          : redata?.first_name
-        : redata?.first_name,
-      last_name: ProfileData
-        ? ProfileData?.last_name
-          ? ProfileData?.last_name
-          : redata?.last_name
-        : redata?.last_name,
-      email: redata?.email,
-      mobile: redata?.phone,
-    };
-    setUserDetails(data);
-  }, [dispatch, setEditCondition, setUserDetails]);
+    const temp_data = localStorage.getItem("userdata");
+    dataUpdateFun(temp_data);
+  }, []);
   useEffect(() => {
     dispatch(GetProfileData());
-  }, [dispatch]);
-  console.log("ProfileData: ", userDetails, ProfileData);
+  }, [setEditCondition]);
+  console.log("ProfileData: ", userDetails, ProfileData, userDetailsEdit);
   return (
     <>
       <div className="container py-4">
@@ -93,42 +122,27 @@ const Profile = () => {
                 <tr>
                   <td style={{ border: "1px solid #000" }}>Name</td>
                   <td style={{ border: "1px solid #000" }}>
-                    {ProfileData
-                      ? ProfileData?.first_name
-                        ? ProfileData?.first_name
-                        : userDetails?.first_name
-                      : userDetails?.first_name}{" "}
-                    {ProfileData
-                      ? ProfileData?.last_name
-                        ? ProfileData?.last_name
-                        : userDetails?.last_name
-                      : userDetails?.last_name}
+                    {userDetails?.first_name} {userDetails?.last_name}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #000" }}>Gender</td>
                   <td style={{ border: "1px solid #000" }}>
-                    {ProfileData
-                      ? ProfileData?.gender
-                        ? ProfileData?.gender
-                        : "- -"
-                      : "- -"}
+                    {userDetails?.gender ? userDetails?.gender : "- -"}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #000" }}>Date Of Birth</td>
                   <td style={{ border: "1px solid #000" }}>
-                    {ProfileData
-                      ? ProfileData?.dob
-                        ? ProfileData?.dob
-                        : "- -"
+                    {userDetails?.date_of_birth
+                      ? userDetails?.date_of_birth
                       : "- -"}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ border: "1px solid #000" }}>Mobile No.</td>
                   <td style={{ border: "1px solid #000" }}>
-                    {userDetails?.mobile}
+                    {userDetails?.phone}
                   </td>
                 </tr>
                 <tr>
@@ -173,8 +187,8 @@ const Profile = () => {
               <input
                 type="date"
                 placeholder="Select DOB"
-                name="dob"
-                value={userDetailsEdit.dob}
+                name="date_of_birth"
+                value={userDetailsEdit.date_of_birth}
                 onChange={(e) => handleUpdate(e)}
               />
               <Form.Select
@@ -201,7 +215,7 @@ const Profile = () => {
                     <p>Selected Image:</p>
                     <img
                       style={{ width: "50px", height: "50px" }}
-                      src={imageUrl}
+                      src={userDetailsEdit.photo}
                       alt="User-Provided"
                     />
                   </div>

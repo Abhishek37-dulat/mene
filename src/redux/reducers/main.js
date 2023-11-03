@@ -9,6 +9,10 @@ import { BannerReducer } from "./BannerReducer";
 import { PostReducer } from "./PostReducer";
 import { CommentReducer } from "./CommentReducer";
 import { saveReducers } from "./SaveReducer";
+import { walletReducers } from "./WalletReducer";
+import { seoReducers } from "./SeoReducer";
+import { BlogReducer } from "./BlogReducer";
+import { ContactReducer } from "./ContactReducer";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
@@ -22,6 +26,10 @@ const rootred = combineReducers({
   PostReducer,
   CommentReducer,
   saveReducers,
+  walletReducers,
+  BlogReducer,
+  seoReducers,
+  ContactReducer,
 });
 
 const middleware = [thunk];

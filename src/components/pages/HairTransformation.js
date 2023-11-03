@@ -26,9 +26,7 @@ const HairTransformation = ({ PostData }) => {
             return (
               <div className="col-12 col-sx-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 py-2">
                 <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                    data?.post_image ? data?.post_image[0] : ""
-                  }`}
+                  src={data?.post_image[0]?.url}
                   alt=""
                   style={{ width: "100%", height: "auto" }}
                 />

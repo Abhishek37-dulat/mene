@@ -44,6 +44,13 @@ import { getAllPost } from "./redux/actions/PostAction";
 import GenderCollection from "./components/pages/GenderCollection";
 import NotFoundPage from "./components/pages/NotFoundPage";
 import { GetSaveData } from "./redux/actions/SaveAction";
+import Blogs from "./components/pages/Blogs";
+import BlogPage from "./components/pages/BlogPage";
+import { getSeo } from "./redux/actions/seoAction";
+import { getAllContacts } from "./redux/actions/ContactAction";
+import Franchise from "./components/pages/Franchise";
+import JobOptions from "./components/pages/JobOptions";
+import axios from "axios";
 // import { useDispatch, useSelector } from "react-redux";
 
 // import { getAllProduct } from "./redux/actions/productAction";
@@ -57,9 +64,23 @@ function App() {
     account,
     userDetails,
   } = useContext(DataContext);
+  const dataUpdateFun = async (userId_data) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const data = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/user/user/${userId_data}`,
+      { headers }
+    );
+    console.log(data);
+    setUserDetails(data.data.data);
+    localStorage.setItem("userdata", JSON.stringify(data.data.data));
+  };
 
   useEffect(() => {
     dispatch(getAllProduct());
+    dispatch(getSeo());
     dispatch(GetProfileData());
   }, [dispatch]);
   useEffect(() => {
@@ -69,11 +90,9 @@ function App() {
       if (trydata.decode) {
         setUserDetails(trydata.decode.userExits);
       } else {
-        console.log("userDetails: ==>", trydata);
-        setUserDetails(trydata.userExits);
-        setAccountStatus(true);
+        dataUpdateFun(trydata.userExits._id);
 
-        localStorage.setItem("userdata", JSON.stringify(trydata.userExits));
+        setAccountStatus(true);
       }
     }
   }, [dispatch, setUserDetails]);
@@ -81,6 +100,7 @@ function App() {
     dispatch(getAllBanner());
     dispatch(getAllPost());
     dispatch(GetSaveData());
+    dispatch(getAllContacts());
   }, [dispatch]);
 
   return (
@@ -100,14 +120,18 @@ function App() {
         <Route path="/collection/:id" element={<Collection />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/help-me" element={<HelpMe />} />
-        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/contact/:id" element={<ContactUs />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/terms-of-services" element={<TermsOfServices />} />
         <Route path="/why-maneology" element={<WhyManeologyCompany />} />
         <Route path="/before-and-after" element={<BeforeAfter />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/:id" element={<BlogPage />} />
         <Route path="/gendercollection/:id" element={<GenderCollection />} />
+        <Route path="franchise" element={<Franchise />} />
+        <Route path="job-options" element={<JobOptions />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route
           path="/return-and-exchange-policy"

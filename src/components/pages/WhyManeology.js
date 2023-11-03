@@ -19,11 +19,9 @@ const WhyManeology = ({ PostData }) => {
                 <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
                   <div className="whymaneologyImg">
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        data?.post_image ? data?.post_image[0] : ""
-                      }`}
+                      src={data?.post_image[0]?.url}
                       alt="why manelogy"
-                      style={{ width: "420px" }}
+                      style={{ width: "220px" }}
                     />
                   </div>
                 </div>

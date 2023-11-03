@@ -87,7 +87,7 @@ const CartPage = () => {
                   <div className="cartResponsiveMainDiv-1">
                     <div>
                       <img
-                        src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                        src={product?.product_image[0]?.url}
                         alt="bodyimage"
                         style={{ width: "100px" }}
                       />

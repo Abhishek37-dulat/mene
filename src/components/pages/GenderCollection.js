@@ -71,13 +71,7 @@ const GenderCollection = () => {
                   onClick={() => handleCollectionData(data)}
                 >
                   <img
-                    src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                      product[0]?.product_image
-                        ? product[0]?.product_image?.length > 0
-                          ? product[0]?.product_image[0]
-                          : ""
-                        : ""
-                    }`}
+                    src={product[0]?.product_image[0]?.url}
                     alt="md"
                     style={{
                       width: "90%",

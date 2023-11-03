@@ -38,9 +38,7 @@ const Footer = () => {
                     return (
                       <>
                         <img
-                          src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                            data?.post_image ? data?.post_image[0] : ""
-                          }`}
+                          src={data?.post_image[0].url}
                           alt="logo"
                           style={{ marginBottom: "20px", width: "100px" }}
                           className="footer-logo"
@@ -71,20 +69,23 @@ const Footer = () => {
             <div className="column col-12 col-md-6 col-lg-3 col-xl-2 ">
               <h5 className="text-white mb-4 foot-1">RESOURCES</h5>
               <div className="footer-links d-flex flex-column">
-                <Link className=" py-2 mb-1 footer-link" to="/">
-                  Home
-                </Link>
                 <Link className=" py-2 mb-1 footer-link" to="/help-me">
                   Help Me Choose
                 </Link>
                 <Link className=" py-2 mb-1 footer-link" to="/about-us">
                   About Us
                 </Link>
-                <Link className=" py-2 mb-1 footer-link" to="/contact-us">
+                <Link className=" py-2 mb-1 footer-link" to="/job-options">
+                  Job Options
+                </Link>
+                <Link className=" py-2 mb-1 footer-link" to="/franchise">
+                  Franchise
+                </Link>
+                <Link className=" py-2 mb-1 footer-link" to="/contact">
                   Contact Us
                 </Link>
-                <Link className=" py-2 mb-1 footer-link" to="/">
-                  Reviews
+                <Link className=" py-2 mb-1 footer-link" to="/blogs">
+                  Blogs
                 </Link>
               </div>
             </div>
@@ -143,7 +144,7 @@ const Footer = () => {
                 <Link className=" py-2 mb-1 footer-link" to="/why-maneology">
                   Why Maneology
                 </Link>
-                <Link className=" py-2 mb-1 footer-link" to="/contact-us">
+                <Link className=" py-2 mb-1 footer-link" to="/contact">
                   How To Apply
                 </Link>
                 <Link className=" py-2 mb-1 footer-link" to="/before-and-after">

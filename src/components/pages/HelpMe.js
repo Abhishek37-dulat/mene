@@ -47,9 +47,7 @@ const HelpMe = () => {
                 <div className="row py-4">
                   <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2  d-flex align-items-center justify-content-center">
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        data?.post_image ? data?.post_image[0] : ""
-                      }`}
+                      src={data?.post_image[0]?.url}
                       alt=""
                       style={{ width: "100%" }}
                     />
@@ -84,9 +82,7 @@ const HelpMe = () => {
                   </div>
                   <div className="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6  d-flex align-items-center justify-content-center">
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        data?.post_image ? data?.post_image[0] : ""
-                      }`}
+                      src={data?.post_image[0]?.url}
                       alt="about"
                       style={{ marginTop: "30px", width: "100%" }}
                     />

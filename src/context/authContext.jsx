@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { refreshCall } from "../service/api";
+import axios from "axios";
 
 export const DataContext = createContext();
 
@@ -8,17 +9,28 @@ export const DataProvider = ({ children }) => {
   const [accountStatus, setAccountStatus] = useState(false);
   const [userDetails, setUserDetails] = useState();
   const [categoriesFinalData, setCategoriesFinalData] = useState();
-
+  const dataUpdateFun = async (userId_data) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const data = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/user/user/${userId_data}`,
+      { headers }
+    );
+    console.log("123userDetails: ==>", data.data.data);
+    setUserDetails(data.data.data);
+    localStorage.setItem("userdata", JSON.stringify(data.data.data));
+  };
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       const trydata = JSON.parse(atob(token.split(".")[1]));
       if (trydata.decode) {
-        setUserDetails(trydata.decode.userExits);
+        dataUpdateFun(trydata.decode.userExits._id);
       } else {
-        console.log("userDetails: ==>", trydata);
-        setUserDetails(trydata.userExits);
-        localStorage.setItem("userdata", JSON.stringify(trydata.userExits));
+        console.log("userDetails: ==>", trydata.userExits);
+        dataUpdateFun(trydata.userExits._id);
       }
     }
   }, [setUserDetails]);
@@ -36,7 +48,7 @@ export const DataProvider = ({ children }) => {
             const temp = { refreshtoken: refreshme };
             refreshCall(temp);
             setAccountStatus(true);
-            setUserDetails(trydata.userExits);
+            dataUpdateFun(trydata.userExits._id);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("refreshtoken");

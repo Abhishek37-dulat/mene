@@ -3,6 +3,7 @@ import Table from "react-bootstrap/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllOrders, cancelOrder } from "../../redux/actions/CheckOutAction";
+import { Typography } from "@mui/material";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -67,7 +68,10 @@ const Orders = () => {
           </thead>
           <tbody>
             {OrderData?.map((item, index) => {
-              if (item.order_status === "NEW")
+              if (
+                item.order_status === "NEW" ||
+                item.order_status === "PENDING"
+              )
                 return (
                   <>
                     <tr
@@ -96,7 +100,7 @@ const Orders = () => {
                             <div>
                               <img
                                 style={{ width: "50px", height: "50px" }}
-                                src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                                src={product?.product_image[0]?.url}
                                 alt="imagedfd"
                               />
                               {product?.product_title}
@@ -119,6 +123,8 @@ const Orders = () => {
                       >
                         {item?.order_status === "CANCELED" ? (
                           ""
+                        ) : item?.order_status === "PENDING" ? (
+                          <Typography>Under Process</Typography>
                         ) : (
                           <button
                             style={{

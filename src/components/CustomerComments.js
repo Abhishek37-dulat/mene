@@ -47,7 +47,7 @@ const CustomerComments = ({ productID }) => {
                     <Typography>{data?.title}</Typography>
                     <img
                       className="card-img-top"
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${data?.image[0]}`}
+                      src={data?.image[0]?.url}
                       alt="Cardimagecap"
                       style={{ width: "100px" }}
                     />

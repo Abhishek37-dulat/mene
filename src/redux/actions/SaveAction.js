@@ -29,7 +29,7 @@ export const AddToSaveData = (item) => async (dispatch) => {
     };
     const savedata = { product_id: item };
     const data = await axios.post(`${url}/save/save`, savedata, { headers });
-
+    console.log(data);
     dispatch({ type: actionType.ADD_SAVE_PRODUCT, payload: data.data.data });
   } catch (error) {
     dispatch({ type: actionType.ERROR_ADD_SAVE_PRODUCT, error: error });
@@ -45,6 +45,7 @@ export const RemoveFromSaveData = (item) => async (dispatch) => {
     const data = await axios.delete(`${url}/save/save/${item}`, {
       headers,
     });
+    console.log(data);
     dispatch({
       type: actionType.DELETE_SAVE_PRODUCT,
       payload: data.data.data,

@@ -14,6 +14,19 @@ import {
 } from "../../redux/actions/AddressAction";
 import Form from "react-bootstrap/Form";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const customSuccessToastStyleSuccess = {
+  background: "#4CAF50",
+  color: "#fff",
+};
+
+const customSuccessToastStyleError = {
+  background: "#E75758",
+  color: "#fff",
+};
+
 const Checkout = () => {
   const dispatch = useDispatch();
   const [empty, setEmpty] = useState();
@@ -67,7 +80,16 @@ const Checkout = () => {
 
   const handlePlaceOrder = (e) => {
     if (!finalAddressData) {
-      alert("Please Select Address");
+      toast.error("Please Select Address!", {
+        toastId: "success2",
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        style: customSuccessToastStyleError,
+      });
     } else {
       setModalShow(true);
     }
@@ -263,7 +285,7 @@ const Checkout = () => {
                           key={index}
                         >
                           <img
-                            src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                            src={product?.product_image[0]?.url}
                             alt="checkout img"
                             style={{ width: "90px", height: "80px" }}
                           />
@@ -388,7 +410,7 @@ const Checkout = () => {
                       fontWeight: "600",
                     }}
                     // className="checkoutBtn2"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => handlePlaceOrder()}
                   >
                     Place Order
                   </button>
@@ -409,6 +431,7 @@ const Checkout = () => {
           </div>
         </>
       )}
+      <ToastContainer />
     </>
   );
 };

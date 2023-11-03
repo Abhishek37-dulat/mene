@@ -8,6 +8,11 @@ import { useEffect } from "react";
 import { getSingleProduct } from "../../redux/actions/productAction";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { DataContext } from "../../context/authContext";
+import {
+  AddToSaveData,
+  RemoveFromSaveData,
+} from "../../redux/actions/SaveAction";
+import { Rating } from "@mui/material";
 
 const HairTopper = () => {
   const navigate = useNavigate();
@@ -21,8 +26,9 @@ const HairTopper = () => {
   const { ProductData } = useSelector((state) => state.ProductReducer);
   const [cateData, setCateData] = useState([]);
   const [pCateData, setPCateData] = useState([]);
-  const { categoriesFinalData, setCategoriesFinalData } =
+  const { categoriesFinalData, setCategoriesFinalData, accountStatus } =
     useContext(DataContext);
+  const { saveData } = useSelector((state) => state.saveReducers);
 
   const send = (e) => {
     // dispatch(DISPLAY(e));
@@ -70,6 +76,24 @@ const HairTopper = () => {
 
   const handleSingleProduct = (product) => {
     dispatch(getSingleProduct(product));
+  };
+  const handleCallFav = (id) => {
+    console.log("i am called", id);
+    if (accountStatus) {
+      dispatch(AddToSaveData(id));
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleCallFavDelete = (id) => {
+    console.log("i am called", id);
+
+    if (accountStatus) {
+      dispatch(RemoveFromSaveData(id));
+    } else {
+      navigate("/login");
+    }
   };
 
   useEffect(() => {
@@ -200,6 +224,9 @@ const HairTopper = () => {
           <div className="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-9 py-4">
             <section className="main-card--container">
               {ProductData?.map((product) => {
+                const tempdata = saveData?.filter(
+                  (item) => item?.product_id === product._id
+                );
                 if (product.product_categories[0].name === cateName) {
                   if (filterProducts(product)) {
                     return (
@@ -215,22 +242,35 @@ const HairTopper = () => {
                                   className="hide"
                                   style={{ marginLeft: "-30px" }}
                                 >
-                                  <AiFillHeart
-                                    style={{
-                                      fontSize: "25px",
-                                      color: "#ff6900",
-                                    }}
-                                  />
-                                  <AiOutlineHeart
-                                    style={{ fontSize: "25px" }}
-                                  />
+                                  {tempdata?.length > 0 ? (
+                                    <AiFillHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        color: "#ff6900",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFavDelete(tempdata[0]?._id)
+                                      }
+                                    />
+                                  ) : (
+                                    <AiOutlineHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFav(product?._id)
+                                      }
+                                    />
+                                  )}
                                 </div>
                                 <NavLink
                                   to={`/cart/${product?._id}`}
                                   style={{ textDecoration: "none" }}
                                 >
                                   <img
-                                    src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                                    src={product?.product_image[0]?.url}
                                     alt="images"
                                     className="card-media"
                                     onClick={() => send(product)}
@@ -243,10 +283,10 @@ const HairTopper = () => {
                                   </h4>
                                 </NavLink>
                                 <span className="card-rating">
-                                  product.rating
+                                  <Rating name="read-only" value={2} readOnly />
                                 </span>
                                 <div className="card-price">
-                                  {product?.product_price}
+                                  ₹{product?.product_price}/-
                                 </div>
                               </div>
                             </Card>

@@ -81,7 +81,7 @@ const CancelOrder = () => {
                           <div>
                             <img
                               style={{ width: "50px", height: "50px" }}
-                              src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                              src={product?.product_image[0]?.url}
                               alt="imagedfd"
                             />
                             {product?.product_title}

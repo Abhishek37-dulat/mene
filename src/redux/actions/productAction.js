@@ -20,6 +20,7 @@ export const getAllProduct = () => async (dispatch) => {
 
 export const getSingleProduct = (data) => async (dispatch) => {
   try {
+    console.log("341212:", data);
     localStorage.removeItem("singleproduct");
     localStorage.setItem("singleproduct", JSON.stringify(data));
     dispatch({ type: actionType.GET_SINGLE_PRODUCT, payload: data });

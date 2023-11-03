@@ -13,18 +13,18 @@ import HairTopper from "./HairTopper";
 // ];
 
 const Collection = ({ collection, category }) => {
-    // const [collection, setCollection] = useState(imageURL
-    // const filteredItems = collection.filter(item => item.category === category);
-    // const [myCollection, setMyCollection] = useState(MainCollection)
+  // const [collection, setCollection] = useState(imageURL
+  // const filteredItems = collection.filter(item => item.category === category);
+  // const [myCollection, setMyCollection] = useState(MainCollection)
 
-    // const updatedList = myCollection.filter((collection, myCollection) => {
-    //   return collection.category === myCollection.category;
-    // });
-    // setCollection(updatedList);
+  // const updatedList = myCollection.filter((collection, myCollection) => {
+  //   return collection.category === myCollection.category;
+  // });
+  // setCollection(updatedList);
 
   return (
     <>
-  {/* {filteredItems.map(item => (
+      {/* {filteredItems.map(item => (
           <HairTopper key={item.id}>{item.name}</HairTopper>
         ))} */}
       <HairTopper />

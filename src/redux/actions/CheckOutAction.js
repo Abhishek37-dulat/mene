@@ -2,6 +2,8 @@ import axios from "axios";
 import * as actionType from "../constants/CheckOutTypes";
 import { toast, ToastContainer } from "react-toastify";
 import env from "react-dotenv";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCartDetailsFromRedux } from "./cartAction";
 
 const url = process.env.REACT_APP_BACKEND_URL;
 // const url = "http://localhost:5643";
@@ -22,6 +24,7 @@ export const placeNewOrder = (orderDetails) => async (dispatch) => {
       orderDetails,
     });
     window.location.href = phonepayData.data.url;
+
     // dispatch({ type: actionType.PLACE_NEW_ORDER, payload: data.data.data });
   } catch (error) {
     dispatch({ type: actionType.ERROR_PLACE_NEW_ORDER, error: error });

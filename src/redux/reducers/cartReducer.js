@@ -9,6 +9,7 @@ const INIT_STATE = {
 export const cartReducers = (state = INIT_STATE, action) => {
   switch (action.type) {
     case actionType.EMPTY_CART:
+      console.log("EMPTY CART?????????????????----------+++++++++: ");
       return { ...state, carts: [] };
     case actionType.GET_CART:
       return { ...state, carts: [...action.payload] };

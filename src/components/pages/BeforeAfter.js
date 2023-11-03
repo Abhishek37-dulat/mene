@@ -66,9 +66,7 @@ const BeforeAfter = () => {
                 return (
                   <div className="col-12 col-sm-4 ">
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                        data?.post_image ? data?.post_image[0] : ""
-                      }`}
+                      src={data?.post_image[0]?.url}
                       alt="BeforeAfter1 "
                       className="img-fluid"
                     />

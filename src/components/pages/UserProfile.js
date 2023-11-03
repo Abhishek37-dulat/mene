@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AiOutlineUser, AiOutlineHeart, AiOutlineWallet } from "react-icons/ai";
@@ -11,11 +11,18 @@ import Wallet from "../Wallet";
 import Address from "../Address";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProfileData } from "../../redux/actions/profileAction";
+import { DataContext } from "../../context/authContext";
 
 const UserProfile = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [userDetails, setUserDetails] = useState();
+  const {
+    accountStatus,
+    setUserDetails,
+    setAccountStatus,
+    account,
+    userDetails,
+  } = useContext(DataContext);
 
   const [isProfile, setIsProfile] = useState(true);
   const [isOrder, setIsOrder] = useState(false);
@@ -74,30 +81,15 @@ const UserProfile = (props) => {
     setIsWallet(false);
     setIsAddress(false);
   };
+  const dataUpdateFun = async (data) => {
+    if (data) {
+      let tempdata = JSON.parse(data);
+      setUserDetails(tempdata);
+    }
+  };
   useEffect(() => {
-    const temp_data = localStorage.getItem("token");
-    const redata = JSON.parse(atob(temp_data.split(".")[1])).userExits;
-
-    const data = {
-      first_name: ProfileData
-        ? ProfileData?.first_name
-          ? ProfileData?.first_name
-          : redata?.first_name
-        : redata?.first_name,
-      last_name: ProfileData
-        ? ProfileData?.last_name
-          ? ProfileData?.last_name
-          : redata?.last_name
-        : redata?.last_name,
-      email: redata?.email,
-      mobile: redata?.phone,
-      image: ProfileData
-        ? ProfileData?.image.length > 0
-          ? ProfileData?.image[0]
-          : ""
-        : "",
-    };
-    setUserDetails(data);
+    const temp_data = localStorage.getItem("userdata");
+    dataUpdateFun(temp_data);
   }, []);
   useEffect(() => {
     dispatch(GetProfileData());
@@ -109,31 +101,22 @@ const UserProfile = (props) => {
           <div className="row">
             <div className="col-12 col-sx-12 col-md-12 col-lg-12 col-xl-12">
               <div className="userprofile">
-                {ProfileData ? (
-                  ProfileData?.image.length > 0 ? (
+                {userDetails ? (
+                  userDetails?.photo ? (
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${ProfileData?.image[0]}`}
-                      alt=""
-                      style={{ width: "30%" }}
+                      src={userDetails?.photo?.url}
+                      alt="dsfsd"
+                      style={{ width: "70px", height: "70px" }}
                     />
                   ) : (
-                    <img src={""} alt="" style={{ width: "30%" }} />
+                    <img src="" alt="sdflsd" style={{ width: "30%" }} />
                   )
                 ) : (
-                  <img src={""} alt="" style={{ width: "30%" }} />
+                  <img src="" alt="sdfswew" style={{ width: "30%" }} />
                 )}
 
                 <p className="title">
-                  {ProfileData
-                    ? ProfileData?.first_name
-                      ? ProfileData?.first_name
-                      : userDetails?.first_name
-                    : userDetails?.first_name}{" "}
-                  {ProfileData
-                    ? ProfileData?.last_name
-                      ? ProfileData?.last_name
-                      : userDetails?.last_name
-                    : userDetails?.last_name}
+                  {userDetails?.first_name} {userDetails?.last_name}
                 </p>
                 <p style={{ paddingBottom: "15px" }}>{userDetails?.email}</p>
               </div>

@@ -66,12 +66,7 @@ const MidSection = ({ PostData }) => {
   //   "https://rukminim1.flixcart.com/flap/3006/433/image/4789bc3aefd54494.jpg?q=50";
   return (
     <>
-      <Image
-        src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-          longBannerData?.length > 0 ? longBannerData[0]?.post_image[0] : ""
-        }`}
-        alt="post image"
-      />
+      <Image src={longBannerData[0]?.post_image[0]?.url} alt="post image" />
 
       <h3 style={{ textAlign: "center", fontWeight: 600, marginTop: "30px" }}>
         <span style={{ color: "#ff6900" }}>Our </span>Collection
@@ -88,7 +83,7 @@ const MidSection = ({ PostData }) => {
             onClick={() => handleCateChange(ele)}
           >
             <img
-              src={`${process.env.REACT_APP_BACKEND_URL}/images/${ele?.product_image[0]}`}
+              src={ele?.product_image[0]?.url}
               alt="mid"
               style={{
                 width: "90%",
