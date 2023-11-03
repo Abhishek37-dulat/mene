@@ -66,7 +66,10 @@ const MidSection = ({ PostData }) => {
   //   "https://rukminim1.flixcart.com/flap/3006/433/image/4789bc3aefd54494.jpg?q=50";
   return (
     <>
-      <Image src={longBannerData[0]?.post_image[0]?.url} alt="post image" />
+      <Image
+        src={longBannerData && longBannerData[0]?.post_image[0]?.url}
+        alt="post image"
+      />
 
       <h3 style={{ textAlign: "center", fontWeight: 600, marginTop: "30px" }}>
         <span style={{ color: "#ff6900" }}>Our </span>Collection
