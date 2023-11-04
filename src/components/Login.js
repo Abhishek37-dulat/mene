@@ -71,7 +71,7 @@ const Login = () => {
 
         setAccountStatus(true);
         dispatch(GetCartData());
-        history(-1);
+        history("/");
       }
     }
   };
