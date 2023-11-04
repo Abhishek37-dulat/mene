@@ -146,12 +146,7 @@ const Header = () => {
                 if (data?.categorie === "Logo") {
                   return (
                     <Link to="/" className="logo" key={index}>
-                      <img
-                        src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-                          data?.post_image ? data?.post_image[0] : ""
-                        }`}
-                        alt=""
-                      />
+                      <img src={data?.post_image[0].url} alt="logomaneology" />
                     </Link>
                   );
                 }
@@ -368,7 +363,7 @@ const Header = () => {
                                   <td>
                                     <NavLink to={`/cart/${product?._id}`}>
                                       <img
-                                        src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                                        src={product?.product_image[0].url}
                                         style={{
                                           width: "7rem",
                                           height: "8rem",

@@ -228,7 +228,7 @@ const Cards = () => {
                         </div>
 
                         <Image
-                          src={`${process.env.REACT_APP_BACKEND_URL}/images/${data.product_image[0]}`}
+                          src={data.product_image[0].url}
                           alt="product"
                           onClick={() => send(data)}
                           className="cardImage"

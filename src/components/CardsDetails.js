@@ -64,6 +64,7 @@ const CardsDetails = () => {
   const { SeoSingle } = useSelector((state) => state.seoReducers);
   const { accountStatus } = useContext(DataContext);
   const [tempSave, setTempSave] = useState([]);
+  const [selectedLength, setSelectedLength] = useState("");
 
   const dispatch = useDispatch();
   const send = (data) => {
@@ -80,9 +81,10 @@ const CardsDetails = () => {
         selectedColorf === "" ||
         selectedSize === "" ||
         selectedDensity === "" ||
-        selectedDensity === "none"
+        selectedDensity === "none" ||
+        selectedLength === ""
       ) {
-        toast.error("Please Select color, Size and Desity!", {
+        toast.error("Please Select color, Size, Length and Desity!", {
           toastId: "success2",
           position: "top-right",
           autoClose: 2000,
@@ -142,7 +144,10 @@ const CardsDetails = () => {
     console.log(e.target.value);
     setSelectedSize(e.target.value);
   };
-
+  const handleChangeLength = (e) => {
+    console.log(e.target.value);
+    setSelectedLength(e.target.value);
+  };
   const schemaJsonString = JSON.stringify(SeoSingle?.seo_schema);
   const ogJsonString = JSON.stringify(SeoSingle?.seo_open_graph);
 
@@ -326,7 +331,6 @@ const CardsDetails = () => {
                     </div>
                     <div className="d-flex">
                       <p style={{ fontWeight: "600" }}>Choose Density </p>
-
                       <div className="density">
                         <select
                           id="density"
@@ -339,7 +343,7 @@ const CardsDetails = () => {
                           <option value="high">High</option>
                         </select>
                       </div>
-                      {selectedDensity}
+                      <p style={{ marginLeft: "10px" }}> {selectedDensity}</p>
                     </div>
 
                     <div className="d-flex">
@@ -377,6 +381,45 @@ const CardsDetails = () => {
                         })}
                       </div>
                     </div>
+
+                    <div className="d-flex py-2">
+                      <p className="py-1" style={{ fontWeight: "600" }}>
+                        Length{" "}
+                      </p>
+                      <div
+                        className="density"
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          alignItems: "center",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        {singleProduct?.product_hair_length?.map((data) => {
+                          return (
+                            <div
+                              style={{
+                                padding: "5px 10px",
+                                boxShadow: "0px 0px 5px rgba(0,0,0,0.3)",
+                                marginLeft: "5px",
+                                cursor: "pointer",
+                                marginTop: "4px",
+                              }}
+                            >
+                              <input
+                                type="radio"
+                                name="length"
+                                value={data}
+                                onChange={handleChangeLength}
+                              />
+                              {data}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
                     <div>
                       <p style={{ fontWeight: "600" }}>
                         Choose Color:{" "}
