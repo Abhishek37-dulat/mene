@@ -82,7 +82,7 @@ const FinalOrder = (props) => {
                 <div className="row">
                   <div className="col-12 col-sx-12 col-sm-12 col-lg-12 col-xl-12 d-flex">
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}/images/${product?.product_image[0]}`}
+                      src={product?.product_image[0].url}
                       alt="final img"
                       style={{ width: "100px", height: "120px" }}
                     />

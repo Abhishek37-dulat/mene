@@ -64,9 +64,7 @@ const SingleBlog = ({ data }) => {
       >
         <img
           style={{ width: "100%", borderRadius: "10px" }}
-          src={`${process.env.REACT_APP_BACKEND_URL}/images/${
-            data?.blog_image ? data?.blog_image[0] : ""
-          }`}
+          src={data?.blog_image[0]?.url}
           alt="Art1"
         />
       </Box>

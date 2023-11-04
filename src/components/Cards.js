@@ -193,9 +193,12 @@ const Cards = () => {
               containerClass="custom-carousel-container"
             >
               {ProductData?.map((data, index) => {
-                // console.log(data?.product_categories[0]?.subCategories);
-                // subCategories
-                if (data?.product_categories[0]?.subCategories?.length > 0) {
+                const temp_product =
+                  data?.product_categories[0]?.subCategories?.map(
+                    (data) => data.name === "Best Products"
+                  );
+                console.log("Best Data", temp_product);
+                if (!temp_product[0]) {
                 } else {
                   const tempdata = saveData?.filter(
                     (item) => item?.product_id === data._id
