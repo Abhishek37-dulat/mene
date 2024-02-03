@@ -99,9 +99,16 @@ const Checkout = () => {
   }, []);
   useEffect(() => {
     const data = localStorage.getItem("userdata");
-    const temp = JSON.parse(data);
-    console.log("console: ", temp);
-    setUserDetails(temp);
+    console.log("for testing: ", data);
+    if (data) {
+      try {
+        const temp = JSON.parse(data);
+        console.log("console: ", temp);
+        setUserDetails(temp);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
   }, []);
   useEffect(() => {
     let p = 0;

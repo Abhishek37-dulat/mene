@@ -67,6 +67,42 @@ const CardsDetails = () => {
   const [selectedLength, setSelectedLength] = useState("");
 
   const dispatch = useDispatch();
+  const sendbuynow = (data) => {
+    const localToken = localStorage.getItem("token");
+    if (localToken) {
+      const finalData = {
+        product_id: data?._id,
+        color: selectedColorf,
+        size: selectedSize,
+        density: selectedDensity,
+      };
+      console.log(finalData, data);
+      if (
+        selectedColorf === "" ||
+        selectedSize === "" ||
+        selectedDensity === "" ||
+        selectedDensity === "none" ||
+        selectedLength === ""
+      ) {
+        toast.error("Please Select color, Size, Length and Desity!", {
+          toastId: "success2",
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: customSuccessToastStyleError,
+        });
+      } else {
+        dispatch(ADD(finalData));
+        dispatch(GetCartData());
+        history("/checkout");
+      }
+    } else {
+      history("/login");
+    }
+  };
   const send = (data) => {
     const localToken = localStorage.getItem("token");
     if (localToken) {
@@ -447,24 +483,22 @@ const CardsDetails = () => {
                         ADD TO CART{" "}
                       </button>
                     ) : null}
-                    <NavLink to={"/checkout"}>
-                      <button
-                        style={{
-                          width: "230px",
-                          height: "50px",
-                          background: "#ff6900",
-                          color: "#fff",
-                          border: "1px solid #ff6900",
-                          borderRadius: "50px",
-                          marginLeft: "5px",
-                        }}
-                        onClick={() => send(singleProduct)}
-                        className="buyitnow"
-                      >
-                        {" "}
-                        BUY IT NOW{" "}
-                      </button>
-                    </NavLink>
+                    <button
+                      style={{
+                        width: "230px",
+                        height: "50px",
+                        background: "#ff6900",
+                        color: "#fff",
+                        border: "1px solid #ff6900",
+                        borderRadius: "50px",
+                        marginLeft: "5px",
+                      }}
+                      onClick={() => sendbuynow(singleProduct)}
+                      className="buyitnow"
+                    >
+                      {" "}
+                      BUY IT NOW{" "}
+                    </button>
                   </div>
                 </div>
               </div>
