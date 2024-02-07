@@ -48,6 +48,7 @@ const customSuccessToastStyleError = {
 const CardsDetails = () => {
   const history = useNavigate();
   const [data, setData] = useState([]);
+
   // const [toggleAdd]
   const [changeImage, setChangeImage] = useState(0);
   const [toggleAddToCart, setToggleAddToCart] = useState(true);
@@ -232,6 +233,12 @@ const CardsDetails = () => {
     SeoSingle,
     ogJsonString
   );
+  useEffect(() => {
+    dispatch(getAllComments(id));
+  }, []);
+  useEffect(() => {
+    console.log("commentdata", CommentData);
+  }, []);
   return (
     <>
       <Helmet>

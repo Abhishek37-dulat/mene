@@ -138,7 +138,7 @@ const Header = () => {
   return (
     <>
       <Topnavbar ContactData={ContactData} />
-      <div className="container-fluid">
+      <div className="navStiky container-fluid">
         <Navbar expand="lg" className="bg-body-tertiary">
           <Container>
             {footerData?.length > 0 &&

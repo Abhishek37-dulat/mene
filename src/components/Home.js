@@ -19,6 +19,7 @@ import men from "../images/hair_loss_in_men-removebg-preview.png";
 import women from "../images/iStock-1221628227-removebg-preview.png";
 import { AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import Testimoni from "./Testimoni";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -161,6 +162,9 @@ const Home = () => {
       {/* <div className="py-4">
         <News />
       </div> */}
+      <div className="py-4">
+        <Testimoni />
+      </div>
       <div className="py-4">
         <WhyManeology PostData={PostData} />
       </div>

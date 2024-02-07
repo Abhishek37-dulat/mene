@@ -10,12 +10,8 @@ const CustomerComments = ({ productID }) => {
   const [comments, setComments] = useState([]);
   useEffect(() => {
     dispatch(getAllComments(productID));
-  }, [dispatch]);
-  useEffect(() => {
-    CommentData?.map((temp) => {
-      console.log(temp.productID);
-    });
-  }, [dispatch]);
+  }, []);
+  console.log(CommentData);
   return (
     <>
       <div>
@@ -47,7 +43,7 @@ const CustomerComments = ({ productID }) => {
                     <Typography>{data?.title}</Typography>
                     <img
                       className="card-img-top"
-                      src={data?.image[0]?.url}
+                      src={data?.image}
                       alt="Cardimagecap"
                       style={{ width: "100px" }}
                     />

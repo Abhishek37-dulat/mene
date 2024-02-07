@@ -28,6 +28,7 @@ export const DataProvider = ({ children }) => {
       const trydata = JSON.parse(atob(token.split(".")[1]));
       if (trydata.decode) {
         dataUpdateFun(trydata.decode.userExits._id);
+        console.log("userDetails: ==>", trydata.userExits);
       } else {
         console.log("userDetails: ==>", trydata.userExits);
         dataUpdateFun(trydata.userExits._id);
@@ -48,6 +49,7 @@ export const DataProvider = ({ children }) => {
             const temp = { refreshtoken: refreshme };
             refreshCall(temp);
             setAccountStatus(true);
+            console.log("tryData", trydata);
             dataUpdateFun(trydata.userExits._id);
           } else {
             localStorage.removeItem("token");

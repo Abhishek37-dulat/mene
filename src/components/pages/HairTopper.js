@@ -23,7 +23,9 @@ const HairTopper = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [cateName, setCateName] = useState("");
-  const { ProductData } = useSelector((state) => state.ProductReducer);
+  const { ProductData, minPrices, maxPrices } = useSelector(
+    (state) => state.ProductReducer
+  );
   const [cateData, setCateData] = useState([]);
   const [pCateData, setPCateData] = useState([]);
   const { categoriesFinalData, setCategoriesFinalData, accountStatus } =
@@ -95,6 +97,11 @@ const HairTopper = () => {
       navigate("/login");
     }
   };
+  useEffect(() => {
+    setMinPrice(minPrices);
+    setMaxPrice(maxPrices);
+    setProgress(maxPrices);
+  }, [minPrices, maxPrices]);
 
   useEffect(() => {
     let name = localStorage.getItem("ATC");
@@ -137,7 +144,7 @@ const HairTopper = () => {
               Price
             </h4>
             <p style={{ marginLeft: "15px" }}>
-              The highest price is Rs. 7.000.00
+              The highest price is Rs. {maxPrices}
             </p>
             {/* <div>
               <label
@@ -167,8 +174,8 @@ const HairTopper = () => {
             >
               <input
                 type="range"
-                min="500"
-                max="7000"
+                min={minPrices}
+                max={maxPrices}
                 value={progress}
                 onChange={handleProgressChange}
                 style={{ backgroundColor: "#ff6900", width: "100%" }}

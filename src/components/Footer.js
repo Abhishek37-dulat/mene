@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { getAllPost } from "../redux/actions/PostAction";
+import PaymentImage from "../images/payment-box.png";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 const Footer = () => {
   const dispatch = useDispatch();
@@ -26,11 +28,23 @@ const Footer = () => {
   return (
     <>
       <footer className="py-5">
-        <div className="container-xxl">
+        <div
+          style={{
+            width: "100%",
+            margin: "0%",
+            padding: "20px 30px",
+          }}
+        >
           <div className="row">
             <div
-              className="column col-12 col-md-6 col-lg-3 col-xl-4"
-              style={{ top: "20px" }}
+              className="column col-12 col-md-6 col-lg-3 col-xl-3"
+              style={{
+                top: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
             >
               {footerData?.length > 0 &&
                 footerData?.map((data, index) => {
@@ -40,12 +54,32 @@ const Footer = () => {
                         <img
                           src={data?.post_image[0].url}
                           alt="logo"
-                          style={{ marginBottom: "20px", width: "100px" }}
+                          style={{ marginBottom: "20px", width: "150px" }}
                           className="footer-logo"
                         />
-                        <p className="text-white footer-para">
-                          {data?.description}
-                        </p>
+                        <div className="footer-links d-flex flex-row">
+                          <a
+                            href="https://www.instagram.com/maneologyglobal/"
+                            style={{ textDecoration: "none", color: "#fff" }}
+                            className="py-2 mx-3"
+                          >
+                            <BsInstagram className="fs-4" />
+                          </a>
+                          <a
+                            href="https://www.facebook.com/maneology/"
+                            style={{ textDecoration: "none", color: "#fff" }}
+                            className="py-2 mx-3"
+                          >
+                            <BsFacebook className="fs-4" />
+                          </a>
+                          <a
+                            href="https://www.youtube.com/@maneology8911"
+                            style={{ textDecoration: "none", color: "#fff" }}
+                            className="py-2 mx-3"
+                          >
+                            <BsYoutube className="fs-4 " />
+                          </a>
+                        </div>
                       </>
                     );
                   }
@@ -81,40 +115,13 @@ const Footer = () => {
                 <Link className=" py-2 mb-1 footer-link" to="/franchise">
                   Franchise
                 </Link>
-                <Link className=" py-2 mb-1 footer-link" to="/contact">
-                  Contact Us
-                </Link>
+
                 <Link className=" py-2 mb-1 footer-link" to="/blogs">
                   Blogs
                 </Link>
               </div>
             </div>
-            <div className="column col-12 col-md-6 col-lg-3 col-xl-2">
-              <h5 className="text-white mb-4 foot-1">SOCIAL</h5>
-              <div className="footer-links d-flex flex-column">
-                <a
-                  href="https://www.instagram.com/maneologyglobal/"
-                  style={{ textDecoration: "none", color: "#fff" }}
-                  className="py-2"
-                >
-                  <BsInstagram className="fs-4" /> Instagram
-                </a>
-                <a
-                  href="https://www.facebook.com/maneology/"
-                  style={{ textDecoration: "none", color: "#fff" }}
-                  className="py-2"
-                >
-                  <BsFacebook className="fs-4" /> Facebook
-                </a>
-                <a
-                  href="https://www.youtube.com/@maneology8911"
-                  style={{ textDecoration: "none", color: "#fff" }}
-                  className="py-2"
-                >
-                  <BsYoutube className="fs-4 " /> Youtube
-                </a>
-              </div>
-            </div>
+
             <div className="column col-12 col-md-6 col-lg-3 col-xl-2">
               <h5 className="text-white mb-4 foot-1">POLICY</h5>
               <div className="footer-links d-flex flex-column">
@@ -156,6 +163,46 @@ const Footer = () => {
                 <Link className="py-2 mb-1 footer-link" to="/faqs">
                   FAQ's
                 </Link>
+              </div>
+            </div>
+            <div
+              className="column col-12 col-md-6 col-lg-3 col-xl-3"
+              style={{
+                top: "20px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                overflow: "hidden",
+              }}
+            >
+              <p className="text-white">Payment Methods</p>
+              <p className="text-white">
+                100% Payment Protection, Easy Return Policy.
+              </p>
+              <img
+                src={PaymentImage}
+                style={{ width: "150px" }}
+                alt="payment ways"
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "30px",
+                }}
+              >
+                <LocalShippingIcon
+                  sx={{
+                    color: "#00A03C",
+                    fontSize: "38px",
+                    webkitTransform: "scaleX(-1)",
+                    transform: "scaleX(-1)",
+                    marginRight: "20px",
+                  }}
+                />
+                <button className="freeShiping">Free Shipping</button>
               </div>
             </div>
           </div>

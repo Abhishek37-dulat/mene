@@ -34,6 +34,7 @@ const WriteReview = ({ productID, showReview, setShowReview }) => {
         image: commentImage,
         productID: productID,
       };
+      console.log(data);
       dispatch(placeNewComment(data));
       setShowReview(false);
     }
@@ -41,10 +42,20 @@ const WriteReview = ({ productID, showReview, setShowReview }) => {
 
   function handleFileChange(event) {
     const file = event.target.files[0];
-    setCommentImage(file);
-    const image = document.getElementById("output");
-    image.src = URL.createObjectURL(event.target.files[0]);
+    console.log(file);
+    imageRead(file);
   }
+  const imageRead = (img) => {
+    const reader = new FileReader();
+    if (img) {
+      reader.readAsDataURL(img);
+      reader.onloadend = () => {
+        setCommentImage(reader.result);
+      };
+    } else {
+      console.log("not found");
+    }
+  };
   useEffect(() => {
     console.log("success");
   }, [showReview]);
@@ -127,9 +138,10 @@ const WriteReview = ({ productID, showReview, setShowReview }) => {
                       />
                       <AiOutlinePlus />
                     </div>
-                    <p>
-                      <img id="output" width="100" alt="fetchImages" />
-                    </p>
+                    {commentImage !== null && (
+                      <img src={commentImage} width="100" alt="fetchImages" />
+                    )}
+
                     {/* <button onClick={handleUpload}>Upload</button> */}
                     <button
                       data-dismiss="modal"

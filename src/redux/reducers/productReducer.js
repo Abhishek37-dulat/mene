@@ -5,7 +5,9 @@ import "react-toastify/dist/ReactToastify.css";
 const initialState = {
   ProductData: [],
   singleProduct: null,
-  searchData:[]
+  searchData: [],
+  minPrices: 0,
+  maxPrices: 0,
 };
 const customSuccessToastStyleSuccess = {
   background: "#4CAF50",
@@ -20,7 +22,26 @@ const customSuccessToastStyleError = {
 export const ProductReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionType.GET_ALL_PRODUCTS:
-      return { ...state, ProductData: action.payload.data };
+      let maxP = 0;
+      let temp2 = action.payload.data.map((item) => {
+        if (maxP < item.product_price) {
+          maxP = item.product_price;
+        }
+      });
+      let minP = maxP;
+      let temp = action.payload.data.map((item) => {
+        if (minP > item.product_price) {
+          minP = item.product_price;
+        }
+      });
+
+      console.log("minPrice: ", minP, maxP);
+      return {
+        ...state,
+        ProductData: action.payload.data,
+        minPrices: minP,
+        maxPrices: maxP,
+      };
     case actionType.GET_SINGLE_PRODUCT:
       return { ...state, singleProduct: action.payload };
     default:
