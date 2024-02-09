@@ -65,7 +65,7 @@ function App() {
     userDetails,
   } = useContext(DataContext);
   const dataUpdateFun = async (userId_data) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("maneologytokenSecurity");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -84,7 +84,8 @@ function App() {
     dispatch(GetProfileData());
   }, [dispatch]);
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("maneologytokenSecurity");
+
     if (token) {
       const trydata = JSON.parse(atob(token.split(".")[1]));
       if (trydata.decode) {
@@ -94,6 +95,9 @@ function App() {
 
         setAccountStatus(true);
       }
+    } else {
+      setAccountStatus(false);
+      setUserDetails(null);
     }
   }, [dispatch, setUserDetails]);
   useEffect(() => {

@@ -76,10 +76,10 @@ const Header = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshtoken");
+    localStorage.removeItem("maneologytokenSecurity");
+    localStorage.removeItem("userdata");
     dispatch(removeCartDetailsFromRedux());
-    setUserDetails();
+    setUserDetails(null);
     setAccountStatus(false);
   };
 
@@ -134,11 +134,15 @@ const Header = () => {
   useEffect(() => {
     setFooterData(PostData.filter((data) => data.categorie === "Logo"));
   }, [setFooterData, PostData]);
-  console.log("footerData::::::::::::::::::::::::::::::::::::", ContactData);
+  console.log(
+    "footerData::::::::::::::::::::::::::::::::::::",
+    ContactData,
+    userDetails
+  );
   return (
     <>
       <Topnavbar ContactData={ContactData} />
-      <div className="navStiky container-fluid">
+      <div className="navStiky container-fluid" style={{ zIndex: 1000 }}>
         <Navbar expand="lg" className="bg-body-tertiary">
           <Container>
             {footerData?.length > 0 &&

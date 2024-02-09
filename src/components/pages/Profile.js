@@ -75,7 +75,7 @@ const Profile = () => {
     console.log(userDetailsEdit);
     const fulldata = { ...userDetailsEdit };
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("maneologytokenSecurity");
       const headers = {
         Authorization: `Bearer ${token}`,
       };
@@ -87,6 +87,7 @@ const Profile = () => {
           headers,
         }
       );
+      console.log(data);
       localStorage.setItem("userdata", JSON.stringify(data.data.data));
       setUserDetails(data.data.data);
     } catch (error) {

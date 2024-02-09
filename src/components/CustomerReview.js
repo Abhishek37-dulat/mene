@@ -5,13 +5,15 @@ import { useSelector } from "react-redux";
 import WriteReview from "./WriteReview";
 import { DataContext } from "../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { Rating } from "@mui/material";
 // import CustomerComments from "./CustomerComments";
 
-const CustomerReview = ({ productID }) => {
+const CustomerReview = ({ productID, avgRating, comments, ratingNumbers }) => {
   // const getdata = useSelector((state) => state.cartreducer.carts);
   const [showReview, setShowReview] = useState(false);
   const { accountStatus, setUserDetails, account, userDetails } =
     useContext(DataContext);
+
   const navigate = useNavigate();
   const now5 = 100;
   const now4 = 80;
@@ -20,6 +22,7 @@ const CustomerReview = ({ productID }) => {
   const now1 = 10;
   console.log("Account Data", accountStatus);
   const handleOnWriteReview = () => {
+    console.log(accountStatus);
     if (accountStatus) {
       setShowReview(true);
     } else {
@@ -32,39 +35,39 @@ const CustomerReview = ({ productID }) => {
       <div className="container">
         <div className="row mx-3">
           <div className="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3 py-4 ">
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <h3
                 style={{
                   fontSize: "30px",
                   fontWeight: 600,
-                  marginLeft: "40px",
                   textAlign: "center",
                 }}
                 className="numberRating"
               >
-                5
+                {avgRating > 0 ? avgRating / 5 : 0}
               </h3>
-              <span
-                style={{
-                  color: "#FDCC0D",
-                  fontSize: "25px",
-                  textAlign: "center",
-                  marginLeft: "90px",
-                }}
-                className="starRating"
-              >
-                ★★★★★
-              </span>
+              <Rating
+                name="read-only"
+                value={avgRating / 5}
+                readOnly
+                style={{ marginBottom: "20px" }}
+              />
               <br />
               <span
                 style={{
                   fontSize: "15px",
                   fontWeight: "600",
-                  marginLeft: "120px",
                 }}
                 className="reviewRating"
               >
-                2 Review
+                {comments.length} Review
               </span>
             </div>
           </div>

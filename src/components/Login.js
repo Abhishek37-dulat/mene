@@ -62,10 +62,10 @@ const Login = () => {
           position: "top-center",
         });
       } else {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("maneologytokenSecurity");
         if (token) {
           const trydata = JSON.parse(atob(token.split(".")[1]));
-
+          console.log(trydata);
           setUserDetails(trydata.userExits);
         }
 

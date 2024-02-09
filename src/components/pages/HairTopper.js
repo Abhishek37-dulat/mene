@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Card from "react-bootstrap/Card";
 
 import { useParams, NavLink, useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { getSingleProduct } from "../../redux/actions/productAction";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { DataContext } from "../../context/authContext";
+import CheckIcon from "@mui/icons-material/Check";
 import {
   AddToSaveData,
   RemoveFromSaveData,
@@ -16,9 +17,13 @@ import { Rating } from "@mui/material";
 
 const HairTopper = () => {
   const navigate = useNavigate();
+  const maleRef = useRef();
+  const femaleRef = useRef();
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(7000);
   const [progress, setProgress] = useState(7000);
+  const [genderMale, setGenderMale] = useState(true);
+  const [genderFemale, setGenderFemale] = useState(true);
   const [price, setPrice] = useState();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -51,6 +56,12 @@ const HairTopper = () => {
     } else {
       setMaxPrice(value);
     }
+  };
+  const handlemaleRef = () => {
+    setGenderMale(!genderMale);
+  };
+  const handlefemaleRef = () => {
+    setGenderFemale(!genderFemale);
   };
 
   const filterProducts = (product) => {
@@ -167,6 +178,37 @@ const HairTopper = () => {
                 }}
               />
             </div> */}
+            <div className="genderSelection">
+              <p>Select Gender</p>
+              <div>
+                <div>
+                  <p>Male</p>
+                  <input
+                    type="checkbox"
+                    name="gender-male"
+                    id="gender"
+                    style={{ display: "none" }}
+                    checked={genderMale}
+                  />
+                  <span onClick={() => handlemaleRef()}>
+                    {genderMale && <CheckIcon />}
+                  </span>
+                </div>
+                <div>
+                  <p>Female</p>
+                  <input
+                    type="checkbox"
+                    name="gender-female"
+                    id="gender"
+                    checked={genderFemale}
+                    style={{ display: "none" }}
+                  />
+                  <span onClick={() => handlefemaleRef()}>
+                    {genderFemale && <CheckIcon />}
+                  </span>
+                </div>
+              </div>
+            </div>
 
             <div
               className="progress-bar"
@@ -234,7 +276,161 @@ const HairTopper = () => {
                 const tempdata = saveData?.filter(
                   (item) => item?.product_id === product._id
                 );
-                if (product.product_categories[0].name === cateName) {
+                if (
+                  product.product_categories[0].name === cateName &&
+                  product.product_gender === "Male" &&
+                  genderMale
+                ) {
+                  if (filterProducts(product)) {
+                    return (
+                      <>
+                        <div className="card-container">
+                          <div className="hover-wishlist">
+                            <Card className="card">
+                              <div
+                                className="card-body"
+                                onClick={() => handleSingleProduct(product)}
+                              >
+                                <div
+                                  className="hide"
+                                  style={{ marginLeft: "-30px" }}
+                                >
+                                  {tempdata?.length > 0 ? (
+                                    <AiFillHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        color: "#ff6900",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFavDelete(tempdata[0]?._id)
+                                      }
+                                    />
+                                  ) : (
+                                    <AiOutlineHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFav(product?._id)
+                                      }
+                                    />
+                                  )}
+                                </div>
+                                <NavLink
+                                  to={`/cart/${product?._id}`}
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  <img
+                                    src={product?.product_image[0]?.url}
+                                    alt="images"
+                                    className="card-media"
+                                    onClick={() => send(product)}
+                                  />
+                                  <h4
+                                    className="card-title"
+                                    onClick={() => send(product)}
+                                  >
+                                    {product?.product_title}
+                                  </h4>
+                                </NavLink>
+                                <span className="card-rating">
+                                  <Rating name="read-only" value={2} readOnly />
+                                </span>
+                                <div className="card-price">
+                                  ₹{product?.product_price}/-
+                                </div>
+                              </div>
+                            </Card>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  } else {
+                    return null;
+                  }
+                } else if (
+                  product.product_categories[0].name === cateName &&
+                  product.product_gender === "Female" &&
+                  genderFemale
+                ) {
+                  if (filterProducts(product)) {
+                    return (
+                      <>
+                        <div className="card-container">
+                          <div className="hover-wishlist">
+                            <Card className="card">
+                              <div
+                                className="card-body"
+                                onClick={() => handleSingleProduct(product)}
+                              >
+                                <div
+                                  className="hide"
+                                  style={{ marginLeft: "-30px" }}
+                                >
+                                  {tempdata?.length > 0 ? (
+                                    <AiFillHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        color: "#ff6900",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFavDelete(tempdata[0]?._id)
+                                      }
+                                    />
+                                  ) : (
+                                    <AiOutlineHeart
+                                      style={{
+                                        fontSize: "25px",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleCallFav(product?._id)
+                                      }
+                                    />
+                                  )}
+                                </div>
+                                <NavLink
+                                  to={`/cart/${product?._id}`}
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  <img
+                                    src={product?.product_image[0]?.url}
+                                    alt="images"
+                                    className="card-media"
+                                    onClick={() => send(product)}
+                                  />
+                                  <h4
+                                    className="card-title"
+                                    onClick={() => send(product)}
+                                  >
+                                    {product?.product_title}
+                                  </h4>
+                                </NavLink>
+                                <span className="card-rating">
+                                  <Rating name="read-only" value={2} readOnly />
+                                </span>
+                                <div className="card-price">
+                                  ₹{product?.product_price}/-
+                                </div>
+                              </div>
+                            </Card>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  } else {
+                    return null;
+                  }
+                } else if (
+                  product.product_categories[0].name === cateName &&
+                  product.product_gender === "Male" &&
+                  genderMale &&
+                  product.product_gender === "Female" &&
+                  genderFemale
+                ) {
                   if (filterProducts(product)) {
                     return (
                       <>

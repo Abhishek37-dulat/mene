@@ -163,3 +163,45 @@
   padding-left: 0% !important;
   padding-right: 0% !important;
 }
+
+.genderSelection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.genderSelection > p {
+  font-size: 18px;
+  font-weight: 600;
+  background-color: #ff6900;
+  color: #fff;
+  padding: 5px 8px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+}
+
+.genderSelection > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.genderSelection > div > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-left: 10px;
+}
+.genderSelection > div > div > span {
+  width: 24px;
+  height: 24px;
+  background-color: #dddddd;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.genderSelection > div > div > span:hover {
+  background-color: #e8e8e8;
+}

@@ -237,8 +237,14 @@ const CardsDetails = () => {
     dispatch(getAllComments(id));
   }, []);
   useEffect(() => {
-    console.log("commentdata", CommentData);
-  }, []);
+    let ratingSum = 0;
+    CommentData?.map((data) => {
+      ratingSum = ratingSum + data?.rating;
+
+      setComments([...comments, data]);
+    });
+    setAvgRating(ratingSum);
+  }, [CommentData]);
   return (
     <>
       <Helmet>
@@ -305,6 +311,7 @@ const CardsDetails = () => {
               <div className="items_img">
                 <div className="items_img">
                   <ReactImageMagnify
+                    style={{ zIndex: 999 }}
                     {...{
                       smallImage: {
                         alt: "ourprod1",
@@ -339,7 +346,12 @@ const CardsDetails = () => {
                     </p>
 
                     <div className="details_rating">
-                      <Rating name="read-only" value={2} readOnly />
+                      <Rating
+                        name="read-only"
+                        value={avgRating / 5}
+                        readOnly
+                        style={{ marginBottom: "20px" }}
+                      />
                     </div>
                     <div className="wishlist-icon">
                       {tempSave?.length > 0 ? (
@@ -520,7 +532,11 @@ const CardsDetails = () => {
         </div>
         <StepVideo stepdata={singleProduct?.product_steps} />
         {/* <SuggestProducts /> */}
-        <CustomerReview productID={singleProduct?._id} />
+        <CustomerReview
+          productID={singleProduct?._id}
+          avgRating={avgRating}
+          comments={comments}
+        />
         <CustomerComments productID={singleProduct?._id} />
       </div>
       <ToastContainer />

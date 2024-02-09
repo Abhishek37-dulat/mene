@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import env from "react-dotenv";
 
 const URL = process.env.REACT_APP_BACKEND_URL;
 // console.log("URL: ", URL);
@@ -18,22 +16,8 @@ export const authenticatesSignup = async (data) => {
 export const authenticatesLogin = async (data) => {
   try {
     const logindata = await axios.post(`${URL}/user/login`, data);
-    localStorage.setItem("token", logindata.data.token);
-    localStorage.setItem("refreshtoken", logindata.data.refreshtoken);
+    localStorage.setItem("maneologytokenSecurity", logindata.data.token);
 
-    return logindata;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const refreshCall = async (data) => {
-  try {
-    const logindata = await axios.post(`${URL}/user/refresh-token`, data);
-    console.log(logindata);
-
-    localStorage.setItem("token", logindata.data.token);
-    localStorage.setItem("refreshtoken", logindata.data.refreshtoken);
     return logindata;
   } catch (error) {
     return error;
