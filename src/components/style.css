@@ -205,3 +205,25 @@
 .genderSelection > div > div > span:hover {
   background-color: #e8e8e8;
 }
+
+.malediv {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.malediv:hover {
+  border: 5px solid #ff6900;
+}
+
+.femalediv {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.femalediv:hover {
+  border: 5px solid #ff6900;
+}

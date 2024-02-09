@@ -72,10 +72,11 @@ const Home = () => {
               <div className="row py-4">
                 <div
                   className="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 main-male"
-                  // style={{
-                  //   width: "50%",
-                  //   height: "400px",
-                  // }}
+                  style={{
+                    width: "50%",
+                    height: "400px",
+                    // border: "1px solid black",
+                  }}
                 >
                   <div
                     className="malediv"
@@ -104,10 +105,10 @@ const Home = () => {
 
                 <div
                   className="col-12 col-sx-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 py-2 main-female"
-                  // style={{
-                  //   width: "50%",
-                  //   height: "400px",
-                  // }}
+                  style={{
+                    width: "50%",
+                    height: "400px",
+                  }}
                 >
                   <div
                     className="femalediv"
